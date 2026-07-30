@@ -220,6 +220,11 @@ function setupTheme() {
         
         // Atualiza os ícones
         updateThemeIcons();
+
+        // Atualiza os gráficos em tempo real para refletir a cor branca no modo escuro
+        if (typeof loadCharts === 'function') {
+            loadCharts();
+        }
     });
 }
 

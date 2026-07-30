@@ -2,7 +2,8 @@
  * TransCloud ERP - Dashboard Module
  */
 
-// Variável global para armazenar a instância do gráfico de status
+// Variáveis globais para armazenar as instâncias dos gráficos
+let chartViagensDia = null;
 let chartStatusEntregas = null;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -54,13 +55,21 @@ function loadKPIs() {
 }
 
 function loadCharts() {
-    const viagens = getData(STORAGE_KEYS.VIAGENS);
-    
+    // Identifica se o modo escuro está ativo
+    const isDark = document.body.classList.contains('dark-theme');
+    const textColor = isDark ? '#ffffff' : '#64748b';
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : '#f3f4f6';
+
     // Gráfico de Viagens por Dia (Barra)
     const canvasViagens = document.getElementById('chartViagensDia');
     if (canvasViagens) {
+        if (chartViagensDia) {
+            chartViagensDia.destroy();
+            chartViagensDia = null;
+        }
+
         const ctx = canvasViagens.getContext('2d');
-        new Chart(ctx, {
+        chartViagensDia = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
@@ -81,22 +90,25 @@ function loadCharts() {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: {
-                            color: '#f3f4f6'
-                        }
+                        ticks: { color: textColor },
+                        grid: { color: gridColor }
                     },
                     x: {
-                        grid: {
-                            display: false
-                        }
+                        ticks: { color: textColor },
+                        grid: { display: false }
                     }
                 }
             }
         });
     }
     
-    // Gráfico de Status das Entregas (Rosquinha) - Começa com Semanal
-    updateStatusChart('Semanal');
+    // Gráfico de Status das Entregas (Rosquinha / Setores)
+    const activeBtn = document.querySelector('.btn-chart-action.active');
+    const periodo = activeBtn ? activeBtn.textContent.trim() : 'Semanal';
+    updateStatusChart(periodo);
+
+    // Atualiza também as atividades recentes com as cores corretas do tema
+    loadRecentActivities();
 }
 
 /**
@@ -113,6 +125,10 @@ function updateStatusChart(periodo) {
         chartStatusEntregas = null;
     }
     
+    // Cor do texto conforme o tema (branco no modo escuro)
+    const isDark = document.body.classList.contains('dark-theme');
+    const textColor = isDark ? '#ffffff' : '#4b5563';
+    
     // Dados diferentes para cada período
     let statusData;
     
@@ -124,7 +140,7 @@ function updateStatusChart(periodo) {
                 backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
                 borderWidth: 0,
                 hoverBorderWidth: 3,
-                hoverBorderColor: '#fff'
+                hoverBorderColor: isDark ? '#1e293b' : '#fff'
             }]
         };
     } else if (periodo === 'Mensal') {
@@ -135,7 +151,7 @@ function updateStatusChart(periodo) {
                 backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
                 borderWidth: 0,
                 hoverBorderWidth: 3,
-                hoverBorderColor: '#fff'
+                hoverBorderColor: isDark ? '#1e293b' : '#fff'
             }]
         };
     }
@@ -152,6 +168,7 @@ function updateStatusChart(periodo) {
                 legend: {
                     position: 'bottom',
                     labels: {
+                        color: textColor,
                         padding: 20,
                         usePointStyle: true,
                         pointStyleWidth: 20,
@@ -169,6 +186,7 @@ function updateStatusChart(periodo) {
                                     text: `${label}: ${value} (${percentage}%)`,
                                     fillStyle: data.datasets[0].backgroundColor[index],
                                     strokeStyle: data.datasets[0].backgroundColor[index],
+                                    fontColor: textColor,
                                     lineWidth: 0,
                                     hidden: false,
                                     index: index
@@ -197,6 +215,13 @@ function loadRecentActivities() {
     const container = document.getElementById('recentActivities');
     if (!container) return;
     
+    // Verifica se o modo escuro está ativo
+    const isDark = document.body.classList.contains('dark-theme');
+
+    // Define as cores de texto e fundo dinamicamente
+    const textColor = isDark ? '#ffffff' : '#1f2937';
+    const subtextColor = isDark ? '#9ca3af' : '#6b7280';
+    
     const activities = [
         {
             icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -204,7 +229,7 @@ function loadRecentActivities() {
             </svg>`,
             text: 'Nova viagem iniciada: São Paulo → Campinas',
             time: '5 min atrás',
-            bg: '#e3f2fd'
+            bg: isDark ? 'rgba(26, 115, 232, 0.2)' : '#e3f2fd'
         },
         {
             icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -212,7 +237,7 @@ function loadRecentActivities() {
             </svg>`,
             text: 'Entrega concluída: Pedido #12345',
             time: '15 min atrás',
-            bg: '#e8f5e9'
+            bg: isDark ? 'rgba(46, 125, 50, 0.2)' : '#e8f5e9'
         },
         {
             icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -221,41 +246,19 @@ function loadRecentActivities() {
             </svg>`,
             text: 'Motorista João Silva finalizou rota',
             time: '30 min atrás',
-            bg: '#fff3e0'
-        },
-        {
-            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="#c62828" stroke-width="2"/>
-                <path d="M12 7V13" stroke="#c62828" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="12" cy="16" r="1" fill="#c62828"/>
-            </svg>`,
-            text: 'Alerta: Veículo JKL-3456 em manutenção',
-            time: '1 hora atrás',
-            bg: '#fce4ec'
-        },
-        {
-            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 2H17L21 6V20C21 21.1046 20.1046 22 19 22H5C3.89543 22 3 21.1046 3 20V4C3 2.89543 3.89543 2 5 2H7Z" stroke="#6a1b9a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M7 2V6H17V2" stroke="#6a1b9a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 13H16" stroke="#6a1b9a" stroke-width="2" stroke-linecap="round"/>
-                <path d="M8 17H12" stroke="#6a1b9a" stroke-width="2" stroke-linecap="round"/>
-            </svg>`,
-            text: 'Relatório mensal gerado com sucesso',
-            time: '2 horas atrás',
-            bg: '#f3e5f5'
+            bg: isDark ? 'rgba(230, 81, 0, 0.2)' : '#fff3e0'
         }
     ];
-    
-    container.innerHTML = activities.map(activity => `
-        <div class="activity-item">
-            <div class="activity-icon" style="background: ${activity.bg};">
-                ${activity.icon}
+
+    container.innerHTML = activities.map(act => `
+        <div class="activity-item" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div class="activity-icon" style="background: ${act.bg}; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                ${act.icon}
             </div>
-            <div class="activity-content">
-                <h4>${activity.text}</h4>
-                <p>Registro atualizado no sistema</p>
+            <div class="activity-info">
+                <p style="margin: 0; font-size: 14px; font-weight: 500; color: ${textColor};">${act.text}</p>
+                <span style="font-size: 12px; color: ${subtextColor};">${act.time}</span>
             </div>
-            <span class="activity-time">${activity.time}</span>
         </div>
     `).join('');
 }
