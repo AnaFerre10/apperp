@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios Detalhados - TransCloud ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/relatorios.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="48" height="48" rx="12" fill="#1a73e8"/>
+                        <path d="M14 24L20 30L34 16" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>TransCloud</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" fill="currentColor"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.6"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.6"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.4"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="transportes.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.5 11.6667L5.83333 5H14.1667L17.5 11.6667V15.8333H15.8333V14.1667H4.16667V15.8333H2.5V11.6667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="5.83333" cy="14.1667" r="1.66667" fill="currentColor"/>
+                        <circle cx="14.1667" cy="14.1667" r="1.66667" fill="currentColor"/>
+                    </svg>
+                    <span>Transportes</span>
+                </a>
+                <a href="relatorios.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.83333 1.66666H14.1667L17.5 5V16.6667C17.5 17.5833 16.75 18.3333 15.8333 18.3333H4.16667C3.25 18.3333 2.5 17.5833 2.5 16.6667V3.33332C2.5 2.41666 3.25 1.66666 4.16667 1.66666H5.83333Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M5.83334 1.66666V5H14.1667V1.66666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.66666 10.8333H13.3333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M6.66666 14.1667H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>Relatórios</span>
+                </a>
+                <a href="configuracoes.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="10" cy="10" r="3.33333" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M17.5 10H15.8333M4.16667 10H2.5M10 2.5V4.16667M10 15.8333V17.5M14.7142 5.28582L13.5355 6.46448M6.46448 13.5355L5.28582 14.7142M14.7142 14.7142L13.5355 13.5355M6.46448 6.46448L5.28582 5.28582" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>Configurações</span>
+                </a>
+                <a href="#" onclick="startTour(); return false;" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5Z" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M10 6.66666V10.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="10" cy="13.75" r="0.625" fill="currentColor"/>
+                    </svg>
+                    <span>Tutorial</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.5 17.5H4.16667C3.25 17.5 2.5 16.75 2.5 15.8333V4.16667C2.5 3.25 3.25 2.5 4.16667 2.5H7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13.3333 14.1667L17.5 10L13.3333 5.83334" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17.5 10H7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left"><h1>Relatórios Detalhados</h1></div>
+                <div class="topbar-right">
+                    <button class="btn-theme-toggle" id="themeToggle" title="Alternar tema">
+                        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <a href="configuracoes.html" class="user-info" style="text-decoration: none; color: inherit;">
+                        <span class="user-name" id="userNameDisplay">Administrador</span>
+                        <div class="user-avatar"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#1a73e8"/><path d="M4 20C4 17.7909 7.79086 16 12 16C16.2091 16 20 17.7909 20 20" stroke="#1a73e8" stroke-width="2" stroke-linecap="round"/></svg></div>
+                    </a>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <!-- Filtros -->
+                <div class="card">
+                    <div class="card-header"><h3>Filtros</h3></div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group"><label>Data Inicial</label><input type="date" id="dataInicial" class="form-control"></div>
+                            <div class="form-group"><label>Data Final</label><input type="date" id="dataFinal" class="form-control"></div>
+                            <div class="form-group">
+                                <label>Tipo de Relatório</label>
+                                <select id="tipoRelatorio" class="form-control">
+                                    <option value="todos">Todos os Relatórios</option>
+                                    <option value="viagens">Relatório de Viagens</option>
+                                    <option value="financeiro">Relatório Financeiro</option>
+                                    <option value="motoristas">Relatório por Motorista</option>
+                                    <option value="veiculos">Relatório por Veículo</option>
+                                    <option value="entregas">Relatório de Entregas</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display:flex; align-items:flex-end;">
+                                <button class="btn btn-primary" id="btnFiltrar">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    Filtrar
+                                </button>
+                                <button class="btn btn-secondary" id="btnLimparFiltros" style="margin-left:8px;">Limpar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cards -->
+                <div class="reports-grid">
+                    <div class="report-card" data-report="viagens">
+                        <div class="report-icon blue"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#e3f2fd"/><path d="M14 24H34M24 14V34" stroke="#1a73e8" stroke-width="2" stroke-linecap="round"/></svg></div>
+                        <h3>Relatório de Viagens</h3>
+                        <p>Análise completa de todas as viagens realizadas com detalhes de origem, destino e valores</p>
+                        <span class="badge badge-info">Atualizado</span>
+                    </div>
+                    <div class="report-card" data-report="financeiro">
+                        <div class="report-icon green"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#e8f5e9"/><path d="M24 16V32M18 22H28C29.1046 22 30 22.8954 30 24C30 25.1046 29.1046 26 28 26H20C18.8954 26 18 26.8954 18 28C18 29.1046 18.8954 30 20 30H30" stroke="#4caf50" stroke-width="2" stroke-linecap="round"/></svg></div>
+                        <h3>Relatório Financeiro</h3>
+                        <p>Receitas, despesas, lucratividade e análise financeira completa</p>
+                        <span class="badge badge-success">Disponível</span>
+                    </div>
+                    <div class="report-card" data-report="motoristas">
+                        <div class="report-icon orange"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#fff3e0"/><circle cx="24" cy="18" r="6" fill="#ff9800"/><path d="M14 36C14 32.134 18.4772 29 24 29C29.5228 29 34 32.134 34 36" stroke="#ff9800" stroke-width="2" stroke-linecap="round"/></svg></div>
+                        <h3>Relatório por Motorista</h3>
+                        <p>Desempenho individual, quantidade de viagens e valores por motorista</p>
+                        <span class="badge badge-info">Atualizado</span>
+                    </div>
+                    <div class="report-card" data-report="veiculos">
+                        <div class="report-icon red"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#fce4ec"/><path d="M10 28L18 14H30L38 28V36H34V32H14V36H10V28Z" stroke="#f44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="34" r="3" fill="#f44336"/><circle cx="32" cy="34" r="3" fill="#f44336"/></svg></div>
+                        <h3>Relatório por Veículo</h3>
+                        <p>Utilização da frota, quilometragem e desempenho dos veículos</p>
+                        <span class="badge badge-warning">Pendente</span>
+                    </div>
+                    <div class="report-card" data-report="entregas">
+                        <div class="report-icon purple"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#f3e5f5"/><path d="M14 24L20 30L34 16" stroke="#9c27b0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                        <h3>Relatório de Entregas</h3>
+                        <p>Status das entregas, prazos e análise de eficiência operacional</p>
+                        <span class="badge badge-success">Disponível.</span>
+                    </div>
+                </div>
+
+                <!-- Resultado do Relatório -->
+                <div class="card" id="reportResultCard" style="display:none;">
+                    <div class="card-header">
+                        <h3 id="reportTitle">Relatório Gerado</h3>
+                        <div class="export-buttons">
+                            <button class="btn btn-sm btn-primary" onclick="exportReport('pdf')"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10.6667 11.3333H5.33333L2.66667 14H13.3333L10.6667 11.3333Z" fill="currentColor"/><path d="M5.33333 8.66667L8 11.3333L10.6667 8.66667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 2V11.3333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> PDF</button>
+                            <button class="btn btn-sm btn-secondary" onclick="exportReport('excel')"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M5.33333 8H10.6667M5.33333 10.6667H10.6667M5.33333 5.33333H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Excel</button>
+                            <button class="btn btn-sm btn-secondary" onclick="exportReport('csv')"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4H12M4 8H12M4 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> CSV</button>
+                            <button class="btn btn-sm btn-secondary" onclick="imprimirRelatorio()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6H12M4 10H10M4 4H12V2H4V4ZM3 12H2.5C1.67157 12 1 11.3284 1 10.5V7.5C1 6.67157 1.67157 6 2.5 6H13.5C14.3284 6 15 6.67157 15 7.5V10.5C15 11.3284 14.3284 12 13.5 12H13V14H3V12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Imprimir</button>
+                        </div>
+                    </div>
+                    <div class="card-body" id="reportOutput">
+                        <p class="text-muted text-center">Selecione um relatório acima para visualizar os dados detalhados</p>
+                    </div>
+                </div>
+
+                <!-- Gráficos -->
+                <div class="charts-grid">
+                    <div class="chart-card"><h3>Receita por Período</h3><canvas id="chartReceita"></canvas></div>
+                    <div class="chart-card"><h3>Comparativo de Entregas</h3><canvas id="chartEntregas"></canvas></div>
+                </div>
+
+                <!-- Histórico -->
+                <div class="card" id="historicoCard">
+                    <div class="card-header"><h3>Últimos Relatórios Gerados</h3></div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead><tr><th>Data</th><th>Tipo</th><th>Período</th><th>Status</th><th>Ações</th></tr></thead>
+                                <tbody id="historicoRelatorios"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="toastContainer"></div>
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/relatorios.js"></script>
+    <script src="js/tour.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

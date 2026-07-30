@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - TransCloud ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/configuracoes.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#1a73e8"/><path d="M14 24L20 30L34 16" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>TransCloud</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" fill="currentColor"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.6"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.6"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.4"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="transportes.html" class="nav-item"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2.5 11.6667L5.83333 5H14.1667L17.5 11.6667V15.8333H15.8333V14.1667H4.16667V15.8333H2.5V11.6667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5.83333" cy="14.1667" r="1.66667" fill="currentColor"/><circle cx="14.1667" cy="14.1667" r="1.66667" fill="currentColor"/></svg><span>Transportes</span></a>
+                <a href="relatorios.html" class="nav-item"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5.83333 1.66666H14.1667L17.5 5V16.6667C17.5 17.5833 16.75 18.3333 15.8333 18.3333H4.16667C3.25 18.3333 2.5 17.5833 2.5 16.6667V3.33332C2.5 2.41666 3.25 1.66666 4.16667 1.66666H5.83333Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.83334 1.66666V5H14.1667V1.66666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.66666 10.8333H13.3333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6.66666 14.1667H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Relatórios</span></a>
+                <a href="configuracoes.html" class="nav-item active"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3.33333" stroke="currentColor" stroke-width="1.5"/><path d="M17.5 10H15.8333M4.16667 10H2.5M10 2.5V4.16667M10 15.8333V17.5M14.7142 5.28582L13.5355 6.46448M6.46448 13.5355L5.28582 14.7142M14.7142 14.7142L13.5355 13.5355M6.46448 6.46448L5.28582 5.28582" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Configurações</span></a>
+                
+                <!-- BOTÃO DO TUTORIAL -->
+                <a href="javascript:void(0)" onclick="startTour()" class="nav-item" id="navTutorialBtn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5Z" stroke="currentColor" stroke-width="1.5"/><path d="M10 6.66666V10.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13.75" r="0.625" fill="currentColor"/></svg>
+                    <span>Tutorial</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 17.5H4.16667C3.25 17.5 2.5 16.75 2.5 15.8333V4.16667C2.5 3.25 3.25 2.5 4.16667 2.5H7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.3333 14.1667L17.5 10L13.3333 5.83334" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.5 10H7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Sair</span></button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left"><h1>Configurações</h1></div>
+                <div class="topbar-right">
+                    <button class="btn-theme-toggle" id="themeToggle" title="Alternar tema">
+                        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 1V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 21V23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4.22 4.22L5.64 5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M18.36 18.36L19.78 19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M1 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M21 12H23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4.22 19.78L5.64 18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    
+                    <a href="configuracoes.html" class="user-info" style="text-decoration: none; color: inherit; cursor: pointer;">
+                        <span class="user-name" id="userNameDisplay">Administrador</span>
+                        <div class="user-avatar">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="8" r="4" fill="#1a73e8"/>
+                                <path d="M4 20C4 17.7909 7.79086 16 12 16C16.2091 16 20 17.7909 20 20" stroke="#1a73e8" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </header>
+
+            <div class="page-content settings-grid">
+
+                <!-- CARD 1: MINHAS INFORMAÇÕES -->
+                <div class="dashboard-card" id="cardMinhasInformacoes">
+                    <div class="card-header">
+                        <span class="title-indicator"></span>
+                        <div>
+                            <h3>Minhas informações</h3>
+                            <p class="card-subtitle">Gerencie seus dados pessoais e credenciais</p>
+                        </div>
+                    </div>
+
+                    <form id="accountForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nome Completo</label>
+                                <input type="text" id="profileName" value="Administrador">
+                            </div>
+                            <div class="form-group">
+                                <label>E-mail Corporativo</label>
+                                <input type="email" id="profileEmail" value="admin@transcloud.com">
+                            </div>
+                        </div>
+
+                        <div class="section-divider-title">Alterar Senha</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nova Senha</label>
+                                <input type="password" placeholder="Digite a nova senha">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirmar Nova Senha</label>
+                                <input type="password" placeholder="Repita a nova senha">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Salvar Alterações da Conta</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- CARD 2: OPÇÕES DO SISTEMA -->
+                <div class="dashboard-card" id="cardOpcoesSistema">
+                    <div class="card-header">
+                        <span class="title-indicator"></span>
+                        <div>
+                            <h3>Opções do Sistema</h3>
+                            <p class="card-subtitle">Personalize os avisos e as opções do sistema</p>
+                        </div>
+                    </div>
+
+                    <div class="settings-list">
+                        <div class="setting-item" id="itemNotificacoes">
+                            <div>
+                                <strong>Notificações por E-mail</strong>
+                                <p>Receber alertas de entregas concluídas, atrasos e relatórios diários</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notificationsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div>
+                                <strong>Backup Automático em Nuvem</strong>
+                                <p>Realizar cópia de segurança dos dados e informações diariamente</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div>
+                                <strong>Sons de Alerta de Painel</strong>
+                                <p>Tocar um aviso sonoro ao surgir uma nova ocorrência de transporte</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    <div id="toastContainer"></div>
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/configuracoes.js"></script>
+    <script src="js/tour.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
