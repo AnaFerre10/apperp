@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /**
  * Configura o comportamento da sidebar e menu hamburguer
+ * Mantém o estado (aberto/fechado) entre as páginas
  */
 function setupSidebar() {
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -27,6 +28,22 @@ function setupSidebar() {
     if (!sidebarToggle || !sidebar) {
         console.warn('Sidebar elements not found');
         return;
+    }
+    
+    // Recupera o estado salvo da sidebar
+    const sidebarState = localStorage.getItem('transcloud_sidebar_state');
+    
+    // Aplica o estado salvo (apenas em desktop)
+    if (window.innerWidth > 768) {
+        if (sidebarState === 'collapsed') {
+            sidebar.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
+        }
+    } else {
+        // Em mobile, sempre começa fechada
+        sidebar.classList.remove('mobile-open');
+        sidebar.classList.remove('collapsed');
     }
     
     // Remove eventos antigos para evitar duplicação
@@ -44,6 +61,13 @@ function setupSidebar() {
         } else {
             // Desktop: expande/recolhe sidebar
             sidebar.classList.toggle('collapsed');
+            
+            // Salva o estado no localStorage
+            if (sidebar.classList.contains('collapsed')) {
+                localStorage.setItem('transcloud_sidebar_state', 'collapsed');
+            } else {
+                localStorage.setItem('transcloud_sidebar_state', 'expanded');
+            }
         }
     });
     
@@ -72,6 +96,19 @@ function setupSidebar() {
     // Ajusta sidebar ao redimensionar a janela
     window.addEventListener('resize', function() {
         if (window.innerWidth > 768) {
+            // Remove classe mobile
+            sidebar.classList.remove('mobile-open');
+            
+            // Restaura estado salvo em desktop
+            const savedState = localStorage.getItem('transcloud_sidebar_state');
+            if (savedState === 'collapsed') {
+                sidebar.classList.add('collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+            }
+        } else {
+            // Em mobile, garante que não tenha classe collapsed
+            sidebar.classList.remove('collapsed');
             sidebar.classList.remove('mobile-open');
         }
     });
