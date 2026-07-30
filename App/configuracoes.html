@@ -35,7 +35,9 @@
 
         <main class="main-content">
             <header class="topbar">
-                <div class="topbar-left"><h1>Configurações</h1></div>
+                <div class="topbar-left">
+                    <h1>Configurações do Sistema</h1>
+                </div>
                 <div class="topbar-right">
                     <div class="user-info">
                         <span class="user-name" id="userNameDisplay">Usuário Admin</span>
@@ -44,38 +46,94 @@
                 </div>
             </header>
 
-            <div class="page-content">
-                <div class="settings-card">
-                    <h3>Perfil do Usuário</h3>
-                    <form id="profileForm">
-                        <div class="form-row">
-                            <div class="form-group"><label>Nome</label><input type="text" id="profileName" value="Usuário Admin"></div>
-                            <div class="form-group"><label>E-mail</label><input type="email" id="profileEmail" value="admin@transcloud.com"></div>
+            <div class="page-content settings-grid">
+
+                <!-- CARD 1: MINHA CONTA E SEGURANÇA -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <span class="title-indicator"></span>
+                        <div>
+                            <h3>Minha Conta e Segurança</h3>
+                            <p class="card-subtitle">Gerencie suas informações pessoais e credenciais de acesso</p>
                         </div>
-                        <button type="submit" class="btn btn-primary">Salvar Perfil</button>
+                    </div>
+
+                    <form id="accountForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nome Completo</label>
+                                <input type="text" id="profileName" value="Usuário Admin">
+                            </div>
+                            <div class="form-group">
+                                <label>E-mail Corporativo</label>
+                                <input type="email" id="profileEmail" value="admin@transcloud.com">
+                            </div>
+                        </div>
+
+                        <div class="section-divider-title">Alterar Senha</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nova Senha</label>
+                                <input type="password" placeholder="Digite a nova senha">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirmar Nova Senha</label>
+                                <input type="password" placeholder="Repita a nova senha">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Salvar Alterações da Conta</button>
+                        </div>
                     </form>
                 </div>
-                <div class="settings-card">
-                    <h3>Preferências</h3>
-                    <div class="setting-item">
-                        <span>Tema Escuro</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-                            <span class="toggle-slider"></span>
-                        </label>
+
+                <!-- CARD 2: OPÇÕES DO SISTEMA -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <span class="title-indicator"></span>
+                        <div>
+                            <h3>Opções do Sistema</h3>
+                            <p class="card-subtitle">Personalize os avisos e rotinas automatizadas do ERP</p>
+                        </div>
                     </div>
-                    <div class="setting-item">
-                        <span>Notificações</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="notificationsToggle" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
+
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <div>
+                                <strong>Notificações por E-mail</strong>
+                                <p>Receber alertas de entregas concluídas, atrasos e relatórios diários</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notificationsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div>
+                                <strong>Backup Automático em Nuvem</strong>
+                                <p>Realizar cópia de segurança do banco de dados diariamente às 00:00</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div>
+                                <strong>Sons de Alerta de Painel</strong>
+                                <p>Tocar um aviso sonoro ao surgir uma nova ocorrência de transporte</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
-                <div class="settings-card">
-                    <h3>Tutorial</h3>
-                    <button class="btn btn-secondary" onclick="resetTutorial()">Reiniciar Tutorial</button>
-                </div>
+
             </div>
         </main>
     </div>
