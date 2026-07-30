@@ -8,15 +8,17 @@
     gap: 24px;
 }
 
+/* Base Card */
 .dashboard-card {
-    background: #fff;
+    background: #ffffff;
     border-radius: 16px;
     padding: 28px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     border: 1px solid #eef2f7;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Força a barra azul e o texto a ficarem juntos na esquerda */
+/* Alinhamento Forçado do Cabeçalho dos Cards */
 .card-header {
     display: flex !important;
     justify-content: flex-start !important;
@@ -64,9 +66,10 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: #94a3b8;
-    margin: 20px 0 12px 0;
+    margin: 24px 0 12px 0;
 }
 
+/* Formulários */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -94,6 +97,7 @@
     font-size: 14px;
     transition: all 0.2s ease;
     background: #f8fafc;
+    color: #0f172a;
 }
 
 .form-group input:focus {
@@ -103,6 +107,7 @@
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
+/* Lista de Opções (Toggles) */
 .setting-item {
     display: flex;
     justify-content: space-between;
@@ -126,6 +131,7 @@
     margin: 4px 0 0 0;
 }
 
+/* Botões e Ações */
 .form-actions {
     display: flex;
     justify-content: flex-start;
@@ -144,7 +150,7 @@
 
 .btn-primary {
     background: #2563eb;
-    color: #fff;
+    color: #ffffff;
 }
 
 .btn-primary:hover {
@@ -152,6 +158,7 @@
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
+/* Toggle Switch */
 .toggle-switch {
     position: relative;
     width: 48px;
@@ -192,6 +199,73 @@
     transform: translateX(22px);
 }
 
+/* ==========================================================================
+   ESTILOS DEDICADOS AO MODO ESCURO (DARK MODE)
+   ========================================================================== */
+
+body.dark-theme .dashboard-card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .card-header {
+    border-bottom-color: #334155;
+}
+
+body.dark-theme .card-header h3 {
+    color: #f8fafc;
+}
+
+body.dark-theme .card-subtitle {
+    color: #94a3b8;
+}
+
+body.dark-theme .section-divider-title {
+    color: #64748b;
+}
+
+body.dark-theme .form-group label {
+    color: #e2e8f0;
+}
+
+body.dark-theme .form-group input {
+    background: #0f172a;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+body.dark-theme .form-group input::placeholder {
+    color: #64748b;
+}
+
+body.dark-theme .form-group input:focus {
+    background: #0f172a;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+body.dark-theme .setting-item {
+    border-bottom-color: #334155;
+}
+
+body.dark-theme .setting-item strong {
+    color: #f8fafc;
+}
+
+body.dark-theme .setting-item p {
+    color: #94a3b8;
+}
+
+body.dark-theme .toggle-slider {
+    background: #475569;
+}
+
+body.dark-theme .toggle-switch input:checked + .toggle-slider {
+    background: #3b82f6;
+}
+
+/* Responsividade */
 @media(max-width: 768px) {
     .form-row {
         grid-template-columns: 1fr;

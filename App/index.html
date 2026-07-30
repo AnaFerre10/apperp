@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/tour.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -61,7 +62,7 @@
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3.33333" stroke="currentColor" stroke-width="1.5"/><path d="M17.5 10H15.8333M4.16667 10H2.5M10 2.5V4.16667M10 15.8333V17.5M14.7142 5.28582L13.5355 6.46448M6.46448 13.5355L5.28582 14.7142M14.7142 14.7142L13.5355 13.5355M6.46448 6.46448L5.28582 5.28582" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                     <span>Configurações</span>
                 </a>
-                <a href="tutorial.html" class="nav-item">
+                <a href="#" class="nav-item" onclick="startTour(); return false;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
                         <path d="M12 16V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -112,7 +113,7 @@
                     </button>
                     
                     <!-- Informações do Usuário -->
-                    <div class="user-info">
+                    <a href="configuracoes.html" class="user-info" style="text-decoration: none; color: inherit; cursor: pointer;">
                         <span class="user-name" id="userNameDisplay">Administrador</span>
                         <div class="user-avatar">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +121,7 @@
                                 <path d="M4 20C4 17.7909 7.79086 16 12 16C16.2091 16 20 17.7909 20 20" stroke="#1a73e8" stroke-width="2" stroke-linecap="round"/>
                             </svg>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </header>
 
@@ -243,6 +244,8 @@
     <script src="js/utils.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/dashboard.js"></script>
+    <script src="js/tour.js"></script>
     <script src="js/app.js"></script>
+    
 </body>
 </html>

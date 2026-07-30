@@ -1,0 +1,145 @@
+/* Overlay geral */
+.tour-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.tour-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* O holofote/spotlight que gera o fundo escuro em volta do elemento */
+.tour-spotlight {
+    position: fixed;
+    z-index: 9999;
+    border-radius: 10px;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+    transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease, left 0.3s ease, width 0.3s ease, height 0.3s ease;
+    pointer-events: none;
+    
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Apenas exibe o escuro quando o tutorial estiver ativo */
+.tour-spotlight.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Caixa do balão explicativo (Popover) */
+.tour-popover {
+    position: fixed;
+    z-index: 10000;
+    width: 320px;
+    background-color: #ffffff;
+    color: #1f2937;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 0;
+    visibility: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Suporte ao Modo Escuro no balão de texto */
+body.dark-theme .tour-popover {
+    background-color: #1e293b;
+    color: #f3f4f6;
+    border-color: #334155;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.tour-popover.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tour-popover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.tour-popover-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.tour-popover-step {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.6;
+}
+
+.tour-popover-body {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.tour-popover-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Botões do tutorial */
+.tour-btn {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tour-btn-skip {
+    background: transparent;
+    color: #6b7280;
+}
+
+body.dark-theme .tour-btn-skip {
+    color: #9ca3af;
+}
+
+.tour-btn-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.tour-btn-prev {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+body.dark-theme .tour-btn-prev {
+    background: #334155;
+    color: #e2e8f0;
+}
+
+.tour-btn-next {
+    background: #1a73e8;
+    color: #ffffff;
+}
+
+.tour-btn-next:hover {
+    background: #1557b0;
+}
+
+.tour-btn-skip:hover,
+.tour-btn-prev:hover {
+    opacity: 0.8;
+}
