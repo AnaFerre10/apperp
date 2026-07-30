@@ -106,7 +106,7 @@ function loadCharts() {
                         labels: {
                             padding: 20,
                             usePointStyle: true,
-                            pointStyleWidth: 8
+                            pointStyleWidth: 20
                         }
                     }
                 }
@@ -147,7 +147,7 @@ function loadRecentActivities() {
         },
         {
             icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="#c62828" stroke-width="2"/>
+                <circle cx="12" cy="12" r="5" stroke="#c62828" stroke-width="2"/>
                 <path d="M12 7V13" stroke="#c62828" stroke-width="2" stroke-linecap="round"/>
                 <circle cx="12" cy="16" r="1" fill="#c62828"/>
             </svg>`,
