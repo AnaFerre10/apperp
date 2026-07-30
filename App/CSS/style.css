@@ -862,3 +862,46 @@ input:checked + .toggle-slider:before {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--gray-400);
 }
+/* ============================================
+   Correções Sidebar Mobile
+   ============================================ */
+
+/* Garante que o botão hamburguer sempre funcione */
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.sidebar-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Melhora a sidebar no mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        background: var(--dark);
+        padding-top: env(safe-area-inset-top);
+    }
+    
+    .sidebar-header {
+        padding-top: 20px;
+    }
+    
+    /* Garante que o conteúdo principal não tenha margem */
+    .main-content {
+        margin-left: 0 !important;
+    }
+}

@@ -13,38 +13,104 @@ document.addEventListener('DOMContentLoaded', function() {
     // Configuração da sidebar
     setupSidebar();
     
-    // Verifica tutorial (apenas se não estiver na página de tutorial)
+    // Verifica tutorial
     checkTutorial();
 });
 
 /**
- * Configura o comportamento da sidebar
+ * Configura o comportamento da sidebar e menu hamburguer
+ * Mantém o estado (aberto/fechado) entre as páginas
  */
 function setupSidebar() {
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
     
-    if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('mobile-open');
-            } else {
-                sidebar.classList.toggle('collapsed');
-            }
-        });
+    if (!sidebarToggle || !sidebar) {
+        console.warn('Sidebar elements not found');
+        return;
     }
+    
+    // Recupera o estado salvo da sidebar
+    const sidebarState = localStorage.getItem('transcloud_sidebar_state');
+    
+    // Aplica o estado salvo (apenas em desktop)
+    if (window.innerWidth > 768) {
+        if (sidebarState === 'collapsed') {
+            sidebar.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
+        }
+    } else {
+        // Em mobile, sempre começa fechada
+        sidebar.classList.remove('mobile-open');
+        sidebar.classList.remove('collapsed');
+    }
+    
+    // Remove eventos antigos para evitar duplicação
+    const newToggle = sidebarToggle.cloneNode(true);
+    sidebarToggle.parentNode.replaceChild(newToggle, sidebarToggle);
+    
+    // Adiciona evento de clique no botão hamburguer
+    newToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (window.innerWidth <= 768) {
+            // Mobile: abre/fecha sidebar como overlay
+            sidebar.classList.toggle('mobile-open');
+        } else {
+            // Desktop: expande/recolhe sidebar
+            sidebar.classList.toggle('collapsed');
+            
+            // Salva o estado no localStorage
+            if (sidebar.classList.contains('collapsed')) {
+                localStorage.setItem('transcloud_sidebar_state', 'collapsed');
+            } else {
+                localStorage.setItem('transcloud_sidebar_state', 'expanded');
+            }
+        }
+    });
     
     // Fecha sidebar mobile ao clicar em um link
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
         item.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar) {
-                    sidebar.classList.remove('mobile-open');
-                }
+                sidebar.classList.remove('mobile-open');
             }
         });
+    });
+    
+    // Fecha sidebar mobile ao clicar fora dela
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            const isClickInside = sidebar.contains(e.target);
+            const isToggleButton = e.target.closest('#sidebarToggle');
+            
+            if (!isClickInside && !isToggleButton && sidebar.classList.contains('mobile-open')) {
+                sidebar.classList.remove('mobile-open');
+            }
+        }
+    });
+    
+    // Ajusta sidebar ao redimensionar a janela
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            // Remove classe mobile
+            sidebar.classList.remove('mobile-open');
+            
+            // Restaura estado salvo em desktop
+            const savedState = localStorage.getItem('transcloud_sidebar_state');
+            if (savedState === 'collapsed') {
+                sidebar.classList.add('collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+            }
+        } else {
+            // Em mobile, garante que não tenha classe collapsed
+            sidebar.classList.remove('collapsed');
+            sidebar.classList.remove('mobile-open');
+        }
     });
 }
 
@@ -55,7 +121,6 @@ function checkTutorial() {
     const tutorialDone = localStorage.getItem(STORAGE_KEYS.TUTORIAL_DONE);
     const currentPage = window.location.pathname.split('/').pop();
     
-    // Não mostra o toast no index.html ou tutorial.html
     if (!tutorialDone && 
         currentPage !== 'tutorial.html' && 
         currentPage !== '' && 
