@@ -1,8 +1,7 @@
-// relatorios.js - Módulo de Relatórios TransCloud (versão unificada e funcional)
+// relatorios.js - Módulo de Relatórios TransCloud (dados fictícios, sem scroll automático)
 
 let chartReceitaInstance = null;
 let chartEntregasInstance = null;
-let chartMotoristasInstance = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     if (!document.getElementById('chartReceita')) return;
@@ -39,7 +38,6 @@ function filtrarPorPeriodo(lista, campoData, periodo) {
 
 /* ========== EVENT LISTENERS ========== */
 function configurarEventListeners() {
-    // Cards de relatório
     document.querySelectorAll('.report-card').forEach(card => {
         card.addEventListener('click', () => {
             const tipo = card.dataset.report;
@@ -50,10 +48,8 @@ function configurarEventListeners() {
         });
     });
 
-    // Botão Filtrar
     document.getElementById('btnFiltrar').addEventListener('click', gerarRelatorioAtual);
 
-    // Limpar filtros
     document.getElementById('btnLimparFiltros').addEventListener('click', () => {
         inicializarFiltros();
         document.getElementById('tipoRelatorio').value = 'todos';
@@ -62,7 +58,6 @@ function configurarEventListeners() {
         showToast('Filtros limpos', 'info');
     });
 
-    // Mudança no select também gera relatório automaticamente
     document.getElementById('tipoRelatorio').addEventListener('change', gerarRelatorioAtual);
 }
 
@@ -82,7 +77,6 @@ function gerarRelatorioAtual() {
         return;
     }
 
-    // Sincroniza o card ativo
     const card = document.querySelector(`.report-card[data-report="${tipo}"]`);
     if (card) destacarCard(card);
 
@@ -94,57 +88,35 @@ function destacarCard(card) {
     card.classList.add('active');
 }
 
-/* ========== GERAÇÃO DE RELATÓRIOS ========== */
+/* ========== GERAÇÃO DE RELATÓRIOS (SEM SCROLL) ========== */
 function gerarRelatorioDetalhado(tipo, periodo) {
-    const card = document.getElementById('reportResultCard');
+    const container = document.getElementById('reportResultCard');
     const titulo = document.getElementById('reportTitle');
     const saida = document.getElementById('reportOutput');
 
-    card.style.display = 'block';
+    container.style.display = 'block';
     saida.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Gerando relatório...</p></div>';
 
     setTimeout(() => {
-        let html = '';
-        let tituloTexto = '';
-
+        let html = '', tituloTexto = '';
         switch (tipo) {
-            case 'viagens':
-                tituloTexto = 'Relatório de Viagens';
-                html = relatorioViagens(periodo);
-                break;
-            case 'financeiro':
-                tituloTexto = 'Relatório Financeiro';
-                html = relatorioFinanceiro(periodo);
-                break;
-            case 'motoristas':
-                tituloTexto = 'Relatório por Motorista';
-                html = relatorioMotoristas(periodo);
-                break;
-            case 'veiculos':
-                tituloTexto = 'Relatório por Veículo';
-                html = relatorioVeiculos(periodo);
-                break;
-            case 'entregas':
-                tituloTexto = 'Relatório de Entregas';
-                html = relatorioEntregas(periodo);
-                break;
-            default:
-                tituloTexto = 'Relatório';
-                html = '<div class="empty-state">Tipo inválido</div>';
+            case 'viagens': tituloTexto = 'Relatório de Viagens'; html = relatorioViagens(periodo); break;
+            case 'financeiro': tituloTexto = 'Relatório Financeiro'; html = relatorioFinanceiro(periodo); break;
+            case 'motoristas': tituloTexto = 'Relatório por Motorista'; html = relatorioMotoristas(periodo); break;
+            case 'veiculos': tituloTexto = 'Relatório por Veículo'; html = relatorioVeiculos(periodo); break;
+            case 'entregas': tituloTexto = 'Relatório de Entregas'; html = relatorioEntregas(periodo); break;
+            default: tituloTexto = 'Relatório'; html = '<div class="empty-state">Tipo inválido</div>';
         }
-
         titulo.textContent = tituloTexto;
         saida.innerHTML = html;
-        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        // Registra no histórico
+        // Removido scrollIntoView propositalmente
         registrarHistorico(tipo, tituloTexto);
         carregarHistorico();
         showToast('Relatório gerado com sucesso!', 'success');
     }, 400);
 }
 
-/* ========== RELATÓRIOS INDIVIDUAIS ========== */
+/* ========== DADOS FICTÍCIOS ABRANGENTES ========== */
 function getViagens() {
     try { return (typeof getData === 'function' && typeof STORAGE_KEYS !== 'undefined') ? (getData(STORAGE_KEYS.VIAGENS) || []) : getViagensExemplo(); }
     catch (e) { return getViagensExemplo(); }
@@ -160,21 +132,36 @@ function getVeiculos() {
 
 function getViagensExemplo() {
     return [
-        { id:1001, origem:'São Paulo/SP', destino:'Rio de Janeiro/RJ', motorista:'João Silva', veiculo:'ABC1D23', data:'2026-07-02', status:'Concluída', valor:3200 },
-        { id:1002, origem:'São Paulo/SP', destino:'Curitiba/PR', motorista:'Maria Santos', veiculo:'DEF4E56', data:'2026-07-05', status:'Concluída', valor:2100 },
-        { id:1003, origem:'Campinas/SP', destino:'Belo Horizonte/MG', motorista:'Pedro Costa', veiculo:'GHI7F89', data:'2026-07-10', status:'Em andamento', valor:2800 },
-        { id:1004, origem:'São Paulo/SP', destino:'Salvador/BA', motorista:'Ana Oliveira', veiculo:'ABC1D23', data:'2026-07-14', status:'Pendente', valor:4100 },
-        { id:1005, origem:'Santos/SP', destino:'São Paulo/SP', motorista:'Carlos Souza', veiculo:'DEF4E56', data:'2026-07-18', status:'Cancelada', valor:900 },
-        { id:1006, origem:'São Paulo/SP', destino:'Porto Alegre/RS', motorista:'João Silva', veiculo:'GHI7F89', data:'2026-07-22', status:'Concluída', valor:3600 }
+        { id:1001, origem:'São Paulo/SP', destino:'Rio de Janeiro/RJ', motorista:'João Silva', veiculo:'ABC1D23', data:'2026-05-05', status:'Concluída', valor:3200 },
+        { id:1002, origem:'São Paulo/SP', destino:'Curitiba/PR', motorista:'Maria Santos', veiculo:'DEF4E56', data:'2026-05-12', status:'Concluída', valor:2100 },
+        { id:1003, origem:'Campinas/SP', destino:'Belo Horizonte/MG', motorista:'Pedro Costa', veiculo:'GHI7F89', data:'2026-06-02', status:'Concluída', valor:2800 },
+        { id:1004, origem:'São Paulo/SP', destino:'Salvador/BA', motorista:'Ana Oliveira', veiculo:'ABC1D23', data:'2026-06-18', status:'Concluída', valor:4100 },
+        { id:1005, origem:'Santos/SP', destino:'São Paulo/SP', motorista:'Carlos Souza', veiculo:'DEF4E56', data:'2026-07-01', status:'Cancelada', valor:900 },
+        { id:1006, origem:'São Paulo/SP', destino:'Porto Alegre/RS', motorista:'João Silva', veiculo:'GHI7F89', data:'2026-07-10', status:'Concluída', valor:3600 },
+        { id:1007, origem:'Rio de Janeiro/RJ', destino:'Vitória/ES', motorista:'Maria Santos', veiculo:'ABC1D23', data:'2026-07-15', status:'Em andamento', valor:1500 },
+        { id:1008, origem:'Belo Horizonte/MG', destino:'Brasília/DF', motorista:'Pedro Costa', veiculo:'DEF4E56', data:'2026-07-20', status:'Pendente', valor:2200 },
+        { id:1009, origem:'Curitiba/PR', destino:'Florianópolis/SC', motorista:'Ana Oliveira', veiculo:'GHI7F89', data:'2026-07-22', status:'Concluída', valor:1800 },
+        { id:1010, origem:'São Paulo/SP', destino:'Goiânia/GO', motorista:'Carlos Souza', veiculo:'ABC1D23', data:'2026-07-25', status:'Concluída', valor:2900 }
     ];
 }
 function getMotoristasExemplo() {
-    return [ { nome:'João Silva' }, { nome:'Maria Santos' }, { nome:'Pedro Costa' }, { nome:'Ana Oliveira' }, { nome:'Carlos Souza' } ];
+    return [
+        { nome:'João Silva', cnh:'12345678900', telefone:'(11) 99999-0001', status:'Disponível' },
+        { nome:'Maria Santos', cnh:'98765432100', telefone:'(21) 98888-0002', status:'Em viagem' },
+        { nome:'Pedro Costa', cnh:'45612378900', telefone:'(31) 97777-0003', status:'Disponível' },
+        { nome:'Ana Oliveira', cnh:'78932145600', telefone:'(41) 96666-0004', status:'Disponível' },
+        { nome:'Carlos Souza', cnh:'32165498700', telefone:'(51) 95555-0005', status:'Inativo' }
+    ];
 }
 function getVeiculosExemplo() {
-    return [ { modelo:'Volvo FH 540', placa:'ABC1D23', status:'Disponível' }, { modelo:'Scania R450', placa:'DEF4E56', status:'Em viagem' }, { modelo:'Mercedes Actros', placa:'GHI7F89', status:'Disponível' } ];
+    return [
+        { modelo:'Volvo FH 540', placa:'ABC1D23', ano:2022, capacidade:25000, status:'Disponível' },
+        { modelo:'Scania R450', placa:'DEF4E56', ano:2023, capacidade:22000, status:'Em viagem' },
+        { modelo:'Mercedes Actros', placa:'GHI7F89', ano:2021, capacidade:24000, status:'Disponível' }
+    ];
 }
 
+/* ========== RELATÓRIOS INDIVIDUAIS ========== */
 function relatorioViagens(periodo) {
     const viagens = filtrarPorPeriodo(getViagens(), 'data', periodo);
     const total = viagens.length;
@@ -426,11 +413,7 @@ function exportReport(formato) {
     const tabela = document.getElementById('tabelaRelatorio');
     if (!tabela) { showToast('Gere um relatório primeiro', 'warning'); return; }
     const tipo = document.getElementById('reportResultCard')?.dataset.currentType || 'relatorio';
-
-    if (formato === 'pdf') {
-        imprimirRelatorio();
-        return;
-    }
+    if (formato === 'pdf') { imprimirRelatorio(); return; }
     if (formato === 'excel' && typeof XLSX !== 'undefined') {
         const wb = XLSX.utils.table_to_book(tabela, { sheet: 'Relatório' });
         XLSX.writeFile(wb, `relatorio-${tipo}-${dataHoje()}.xlsx`);
@@ -442,7 +425,6 @@ function exportReport(formato) {
         const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
         baixarBlob(blob, `relatorio-${tipo}-${dataHoje()}.csv`);
         showToast('CSV exportado', 'success');
-        return;
     }
 }
 
@@ -461,10 +443,7 @@ function baixarBlob(blob, nome) {
     URL.revokeObjectURL(url);
 }
 
-function imprimirRelatorio() {
-    window.print();
-}
-
+function imprimirRelatorio() { window.print(); }
 function dataHoje() { return new Date().toISOString().slice(0,10); }
 
 /* ========== UTILITÁRIOS ========== */
