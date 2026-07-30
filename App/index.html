@@ -57,11 +57,8 @@
                     </svg>
                     <span>Relatórios</span>
                 </a>
-                <a href="configuracoes.html" class="nav-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M19.4 15C19.2669 15.3016 19.7272 15.8116 19.7272 15.8116C19.7272 15.8116 20.0304 16.0804 19.7895 16.4133C19.5485 16.7462 18.8518 17.5262 18.5533 17.682C18.2549 17.8379 17.9045 17.682 17.6951 17.4864C17.4857 17.2908 17.1505 17.1178 16.8993 17.2C16.6482 17.2822 16.35 17.8728 16.35 18.1904C16.35 18.508 16.05 19 15.75 19H8.25C7.95 19 7.65 18.508 7.65 18.1904C7.65 17.8728 7.35178 17.2822 7.10067 17.2C6.84956 17.1178 6.51434 17.2908 6.30492 17.4864C6.0955 17.682 5.74514 17.8379 5.44669 17.682C5.14824 17.5262 4.45146 16.7462 4.21053 16.4133C3.9696 16.0804 4.27282 15.8116 4.27282 15.8116C4.27282 15.8116 4.7331 15.3016 4.6 15C4.4669 14.6984 3.75 14.5 3.75 14.25C3.75 14 3.75 13.75 4 13.5C4.25 13.25 4.4669 12.8016 4.6 12.5C4.7331 12.1984 4.27282 11.6884 4.27282 11.6884C4.27282 11.6884 3.9696 11.4196 4.21053 11.0867C4.45146 10.7538 5.14824 9.97382 5.44669 9.81796C5.74514 9.6621 6.0955 9.81796 6.30492 10.0136C6.51434 10.2092 6.84956 10.3822 7.10067 10.3C7.35178 10.2178 7.65 9.62722 7.65 9.30962C7.65 8.99202 7.95 8.5 8.25 8.5H15.75C16.05 8.5 16.35 8.99202 16.35 9.30962C16.35 9.62722 16.6482 10.2178 16.8993 10.3C17.1505 10.3822 17.4857 10.2092 17.6951 10.0136C17.9045 9.81796 18.2549 9.6621 18.5533 9.81796C18.8518 9.97382 19.5485 10.7538 19.7895 11.0867C20.0304 11.4196 19.7272 11.6884 19.7272 11.6884C19.7272 11.6884 19.2669 12.1984 19.4 12.5C19.5331 12.8016 20.25 13 20.25 13.25C20.25 13.5 20.25 13.75 20 14C19.75 14.25 19.5331 14.6984 19.4 15Z" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
+               <a href="configuracoes.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3.33333" stroke="currentColor" stroke-width="1.5"/><path d="M17.5 10H15.8333M4.16667 10H2.5M10 2.5V4.16667M10 15.8333V17.5M14.7142 5.28582L13.5355 6.46448M6.46448 13.5355L5.28582 14.7142M14.7142 14.7142L13.5355 13.5355M6.46448 6.46448L5.28582 5.28582" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                     <span>Configurações</span>
                 </a>
                 <a href="tutorial.html" class="nav-item">
@@ -88,11 +85,33 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Header Padronizado -->
+            
             <header class="topbar">
                 <div class="topbar-left">
                     <h1>Dashboard</h1>
                 </div>
                 <div class="topbar-right">
+                    <!-- Botão de Tema -->
+                    <button class="btn-theme-toggle" id="themeToggle" title="Alternar tema">
+                        <!-- Ícone do sol (modo claro) -->
+                        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 1V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 21V23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4.22 4.22L5.64 5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M18.36 18.36L19.78 19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M1 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M21 12H23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4.22 19.78L5.64 18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <!-- Ícone da lua (modo escuro) -->
+                        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Informações do Usuário -->
                     <div class="user-info">
                         <span class="user-name" id="userNameDisplay">Administrador</span>
                         <div class="user-avatar">
