@@ -3,47 +3,43 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Verifica se estamos na página do dashboard
     if (!document.getElementById('chartViagensDia')) return;
     
     loadKPIs();
     loadCharts();
     loadRecentActivities();
+    
+    // Event listeners para os botões de ação dos gráficos
+    document.querySelectorAll('.btn-chart-action').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.parentElement.querySelectorAll('.btn-chart-action').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
 });
 
-/**
- * Carrega os KPIs do dashboard
- */
 function loadKPIs() {
     const viagens = getData(STORAGE_KEYS.VIAGENS);
-    
-    const viagensHoje = viagens.filter(v => v.status === 'Em andamento' || v.status === 'Concluída').length;
-    const entregasRealizadas = viagens.filter(v => v.status === 'Concluída').length;
-    const emTransito = viagens.filter(v => v.status === 'Em andamento').length;
-    const atrasos = viagens.filter(v => v.status === 'Cancelada').length;
     
     const kpiViagensHoje = document.getElementById('kpiViagensHoje');
     const kpiEntregasRealizadas = document.getElementById('kpiEntregasRealizadas');
     const kpiEmTransito = document.getElementById('kpiEmTransito');
     const kpiAtrasos = document.getElementById('kpiAtrasos');
     
-    if (kpiViagensHoje) kpiViagensHoje.textContent = viagensHoje;
-    if (kpiEntregasRealizadas) kpiEntregasRealizadas.textContent = entregasRealizadas;
-    if (kpiEmTransito) kpiEmTransito.textContent = emTransito;
-    if (kpiAtrasos) kpiAtrasos.textContent = atrasos;
+    if (kpiViagensHoje) kpiViagensHoje.textContent = viagens.filter(v => v.status === 'Em andamento' || v.status === 'Concluída').length;
+    if (kpiEntregasRealizadas) kpiEntregasRealizadas.textContent = viagens.filter(v => v.status === 'Concluída').length;
+    if (kpiEmTransito) kpiEmTransito.textContent = viagens.filter(v => v.status === 'Em andamento').length;
+    if (kpiAtrasos) kpiAtrasos.textContent = viagens.filter(v => v.status === 'Cancelada').length;
 }
 
-/**
- * Carrega os gráficos
- */
 function loadCharts() {
     const viagens = getData(STORAGE_KEYS.VIAGENS);
     
-    // Gráfico de Viagens por Dia (simulado)
+    // Gráfico de Viagens por Dia
     const canvasViagens = document.getElementById('chartViagensDia');
     if (canvasViagens) {
-        const ctx1 = canvasViagens.getContext('2d');
-        new Chart(ctx1, {
+        const ctx = canvasViagens.getContext('2d');
+        new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
@@ -51,7 +47,8 @@ function loadCharts() {
                     label: 'Viagens',
                     data: [12, 19, 15, 22, 18, 8],
                     backgroundColor: '#1a73e8',
-                    borderRadius: 6
+                    borderRadius: 8,
+                    borderSkipped: false
                 }]
             },
             options: {
@@ -59,6 +56,19 @@ function loadCharts() {
                 maintainAspectRatio: true,
                 plugins: {
                     legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#f3f4f6'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
                 }
             }
         });
@@ -74,15 +84,17 @@ function loadCharts() {
             'Cancelada': viagens.filter(v => v.status === 'Cancelada').length
         };
         
-        const ctx2 = canvasStatus.getContext('2d');
-        new Chart(ctx2, {
+        const ctx = canvasStatus.getContext('2d');
+        new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: Object.keys(statusCounts),
                 datasets: [{
                     data: Object.values(statusCounts),
                     backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
-                    borderWidth: 0
+                    borderWidth: 0,
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: '#fff'
                 }]
             },
             options: {
@@ -90,7 +102,12 @@ function loadCharts() {
                 maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        position: 'bottom'
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyleWidth: 8
+                        }
                     }
                 }
             }
@@ -98,30 +115,69 @@ function loadCharts() {
     }
 }
 
-/**
- * Carrega atividades recentes
- */
 function loadRecentActivities() {
     const container = document.getElementById('recentActivities');
     if (!container) return;
     
     const activities = [
-        { icon: '🚛', text: 'Nova viagem iniciada: São Paulo → Campinas', time: 'Há 5 minutos', bg: '#e3f2fd' },
-        { icon: '✅', text: 'Entrega concluída: Pedido #12345', time: 'Há 15 minutos', bg: '#e8f5e9' },
-        { icon: '👤', text: 'Motorista João Silva finalizou rota', time: 'Há 30 minutos', bg: '#fff3e0' },
-        { icon: '⚠️', text: 'Alerta: Veículo JKL-3456 em manutenção', time: 'Há 1 hora', bg: '#fce4ec' },
-        { icon: '📋', text: 'Relatório mensal gerado', time: 'Há 2 horas', bg: '#f3e5f5' }
+        {
+            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 12H18L15 21L9 3L6 12H2" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`,
+            text: 'Nova viagem iniciada: São Paulo → Campinas',
+            time: '5 min atrás',
+            bg: '#e3f2fd'
+        },
+        {
+            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6L9 17L4 12" stroke="#2e7d32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`,
+            text: 'Entrega concluída: Pedido #12345',
+            time: '15 min atrás',
+            bg: '#e8f5e9'
+        },
+        {
+            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4" stroke="#e65100" stroke-width="2"/>
+                <path d="M4 20C4 17.7909 7.79086 16 12 16C16.2091 16 20 17.7909 20 20" stroke="#e65100" stroke-width="2" stroke-linecap="round"/>
+            </svg>`,
+            text: 'Motorista João Silva finalizou rota',
+            time: '30 min atrás',
+            bg: '#fff3e0'
+        },
+        {
+            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke="#c62828" stroke-width="2"/>
+                <path d="M12 7V13" stroke="#c62828" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="12" cy="16" r="1" fill="#c62828"/>
+            </svg>`,
+            text: 'Alerta: Veículo JKL-3456 em manutenção',
+            time: '1 hora atrás',
+            bg: '#fce4ec'
+        },
+        {
+            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 2H17L21 6V20C21 21.1046 20.1046 22 19 22H5C3.89543 22 3 21.1046 3 20V4C3 2.89543 3.89543 2 5 2H7Z" stroke="#6a1b9a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 2V6H17V2" stroke="#6a1b9a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 13H16" stroke="#6a1b9a" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 17H12" stroke="#6a1b9a" stroke-width="2" stroke-linecap="round"/>
+            </svg>`,
+            text: 'Relatório mensal gerado com sucesso',
+            time: '2 horas atrás',
+            bg: '#f3e5f5'
+        }
     ];
     
     container.innerHTML = activities.map(activity => `
         <div class="activity-item">
-            <div class="activity-icon" style="background: ${activity.bg}; font-size: 20px; display: flex; align-items: center; justify-content: center;">
+            <div class="activity-icon" style="background: ${activity.bg};">
                 ${activity.icon}
             </div>
             <div class="activity-content">
                 <h4>${activity.text}</h4>
-                <p>${activity.time}</p>
+                <p>Registro atualizado no sistema</p>
             </div>
+            <span class="activity-time">${activity.time}</span>
         </div>
     `).join('');
 }
