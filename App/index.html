@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - TransCloud ERP</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/tour.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/tour.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -58,7 +58,7 @@
                     </svg>
                     <span>Relatórios</span>
                 </a>
-               <a href="configuracoes.html" class="nav-item">
+                <a href="configuracoes.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3.33333" stroke="currentColor" stroke-width="1.5"/><path d="M17.5 10H15.8333M4.16667 10H2.5M10 2.5V4.16667M10 15.8333V17.5M14.7142 5.28582L13.5355 6.46448M6.46448 13.5355L5.28582 14.7142M14.7142 14.7142L13.5355 13.5355M6.46448 6.46448L5.28582 5.28582" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                     <span>Configurações</span>
                 </a>
@@ -85,16 +85,21 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Header Padronizado -->
-            
+            <!-- Topbar -->
             <header class="topbar">
                 <div class="topbar-left">
                     <h1>Dashboard</h1>
+                    <span class="topbar-date" id="currentDate"></span>
                 </div>
                 <div class="topbar-right">
-                    <!-- Botão de Tema -->
+                    <button class="btn-refresh" id="refreshData" title="Atualizar dados">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23 4V10H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M1 20V14H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3.51 9C4.01711 7.56633 4.87939 6.28531 6.01506 5.27544C7.15072 4.26557 8.52185 3.55944 9.99944 3.22437C11.477 2.8893 13.0131 2.93641 14.4702 3.36166C15.9272 3.78691 17.2581 4.57664 18.36 5.57L23 10M1 14L5.64 18.43C6.74188 19.4234 8.07278 20.2131 9.52983 20.6383C10.9869 21.0636 12.523 21.1107 14.0006 20.7756C15.4782 20.4406 16.8493 19.7344 17.9849 18.7246C19.1206 17.7147 19.9829 16.4337 20.49 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
                     <button class="btn-theme-toggle" id="themeToggle" title="Alternar tema">
-                        <!-- Ícone do sol (modo claro) -->
                         <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
                             <path d="M12 1V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -106,13 +111,10 @@
                             <path d="M4.22 19.78L5.64 18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             <path d="M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
-                        <!-- Ícone da lua (modo escuro) -->
                         <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    
-                    <!-- Informações do Usuário -->
                     <a href="configuracoes.html" class="user-info" style="text-decoration: none; color: inherit; cursor: pointer;">
                         <span class="user-name" id="userNameDisplay">Administrador</span>
                         <div class="user-avatar">
@@ -126,7 +128,7 @@
             </header>
 
             <div class="page-content">
-                <!-- KPI Cards -->
+                <!-- KPI Cards (linha 1) -->
                 <div class="kpi-grid">
                     <div class="kpi-card">
                         <div class="kpi-icon-wrapper" style="background: linear-gradient(135deg, #e3f2fd, #bbdefb);">
@@ -143,7 +145,6 @@
                             <span class="kpi-subtitle">Em andamento</span>
                         </div>
                     </div>
-                    
                     <div class="kpi-card">
                         <div class="kpi-icon-wrapper" style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9);">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -159,7 +160,6 @@
                             <span class="kpi-subtitle">Hoje</span>
                         </div>
                     </div>
-                    
                     <div class="kpi-card">
                         <div class="kpi-icon-wrapper" style="background: linear-gradient(135deg, #fff3e0, #ffe0b2);">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -177,7 +177,6 @@
                             <span class="kpi-subtitle">Veículos ativos</span>
                         </div>
                     </div>
-                    
                     <div class="kpi-card">
                         <div class="kpi-icon-wrapper" style="background: linear-gradient(135deg, #fce4ec, #f8bbd0);">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -197,7 +196,8 @@
                     </div>
                 </div>
 
-                <!-- Charts Section -->
+
+                <!-- Charts Grid -->
                 <div class="charts-grid">
                     <div class="chart-card">
                         <div class="chart-header">
@@ -227,25 +227,66 @@
                     </div>
                 </div>
 
-                <!-- Recent Activities -->
+                <!-- Segundo par de gráficos: linha + tabela -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Tendência de Entregas</h3>
+                            <div class="chart-legend">
+                                <span class="legend-item">
+                                    <span class="legend-dot" style="background: #10b981;"></span>
+                                    Últimos 7 dias
+                                </span>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="chartTendenciaEntregas"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Próximas Viagens</h3>
+                            <span class="badge-soft">Hoje</span>
+                        </div>
+                        <div class="chart-body" id="proximasViagens">
+                            <!-- Populado via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabela de Últimas Entregas -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Últimas Entregas</h3>
+                        <button class="btn-outline-sm" onclick="loadRecentActivities()">Atualizar</button>
+                    </div>
+                    <div class="card-body" style="padding: 0 24px 24px 24px;">
+                        <div class="table-responsive" id="tableEntregas">
+                            <!-- Populado via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Atividades Recentes (mantido) -->
                 <div class="card">
                     <div class="card-header">
                         <h3>Atividades Recentes</h3>
                     </div>
                     <div class="card-body" id="recentActivities">
-                        <!-- Populated by JavaScript -->
+                        <!-- Populado via JS -->
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
     <div id="toastContainer"></div>
+
     <script src="js/storage.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/tour.js"></script>
     <script src="js/app.js"></script>
-    
 </body>
 </html>
