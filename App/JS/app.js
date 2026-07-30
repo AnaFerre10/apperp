@@ -152,3 +152,93 @@ function resetTutorial() {
         window.location.href = 'tutorial.html';
     }, 1500);
 }
+/**
+ * TransCloud ERP - Main Application Module
+ * Configurações globais, navegação e tema (SEM LOGIN)
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Remove animações durante o carregamento inicial
+    document.body.classList.add('preload');
+    
+    // Configura nome do usuário padrão
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    if (userNameDisplay) {
+        userNameDisplay.textContent = 'Administrador';
+    }
+    
+    // Configuração da sidebar
+    setupSidebar();
+    
+    // Configuração do tema
+    setupTheme();
+    
+    // Verifica tutorial
+    checkTutorial();
+    
+    // Remove a classe preload após tudo estar configurado
+    setTimeout(function() {
+        document.body.classList.remove('preload');
+    }, 50);
+});
+
+/**
+ * Configura o tema claro/escuro
+ */
+function setupTheme() {
+    const themeToggle = document.getElementById('themeToggle');
+    
+    if (!themeToggle) return;
+    
+    // Recupera o tema salvo
+    const savedTheme = localStorage.getItem('transcloud_theme');
+    
+    // Aplica o tema salvo (padrão: claro)
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+    } else {
+        document.body.classList.remove('dark-theme');
+    }
+    
+    // Atualiza a visibilidade dos ícones
+    updateThemeIcons();
+    
+    // Remove eventos antigos
+    const newToggle = themeToggle.cloneNode(true);
+    themeToggle.parentNode.replaceChild(newToggle, themeToggle);
+    
+    // Adiciona evento de clique
+    newToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark-theme');
+        
+        // Salva a preferência
+        if (document.body.classList.contains('dark-theme')) {
+            localStorage.setItem('transcloud_theme', 'dark');
+        } else {
+            localStorage.setItem('transcloud_theme', 'light');
+        }
+        
+        // Atualiza os ícones
+        updateThemeIcons();
+    });
+}
+
+/**
+ * Atualiza a visibilidade dos ícones de sol/lua
+ */
+function updateThemeIcons() {
+    const iconSun = document.querySelector('.icon-sun');
+    const iconMoon = document.querySelector('.icon-moon');
+    
+    if (!iconSun || !iconMoon) return;
+    
+    if (document.body.classList.contains('dark-theme')) {
+        iconSun.style.display = 'block';
+        iconMoon.style.display = 'none';
+    } else {
+        iconSun.style.display = 'none';
+        iconMoon.style.display = 'block';
+    }
+}
+
+// ... resto do código (setupSidebar, checkTutorial, logout, resetTutorial) permanece igual
