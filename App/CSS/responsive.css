@@ -1,0 +1,111 @@
+/* ============================================
+   Responsive Styles
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .sidebar {
+        width: var(--sidebar-collapsed);
+    }
+    
+    .sidebar .logo span,
+    .sidebar .nav-item span,
+    .sidebar .btn-logout span {
+        display: none;
+    }
+    
+    .sidebar .nav-item {
+        justify-content: center;
+        padding: 12px;
+    }
+    
+    .main-content {
+        margin-left: var(--sidebar-collapsed);
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: var(--sidebar-width);
+    }
+    
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    
+    .sidebar.mobile-open .logo span,
+    .sidebar.mobile-open .nav-item span,
+    .sidebar.mobile-open .btn-logout span {
+        display: inline;
+    }
+    
+    .sidebar.mobile-open .nav-item {
+        justify-content: flex-start;
+        padding: 12px 20px;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .tabs {
+        overflow-x: auto;
+    }
+    
+    .topbar {
+        padding: 0 16px;
+    }
+    
+    .page-content {
+        padding: 16px;
+    }
+    
+    .tutorial-content {
+        padding: 24px;
+    }
+    
+    .tutorial-navigation {
+        padding: 16px 24px;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .tutorial-navigation button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .toolbar {
+        flex-direction: column;
+    }
+    
+    .search-box {
+        max-width: 100%;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+}
