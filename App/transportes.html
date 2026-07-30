@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="css/transportes.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="app-container">
-        <!-- Sidebar (same as dashboard) -->
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
@@ -30,7 +31,7 @@
                 </button>
             </div>
             <nav class="sidebar-nav">
-               <a href="index.html" class="nav-item ">
+                <a href="index.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="3" y="3" width="7" height="7" rx="1.5" fill="currentColor"/>
                         <rect x="14" y="3" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.6"/>
@@ -70,9 +71,7 @@
                     <h1>Transportes</h1>
                 </div>
                 <div class="topbar-right">
-                    <!-- Botão de Tema -->
                     <button class="btn-theme-toggle" id="themeToggle" title="Alternar tema">
-                        <!-- Ícone do sol (modo claro) -->
                         <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
                             <path d="M12 1V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -84,14 +83,13 @@
                             <path d="M4.22 19.78L5.64 18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             <path d="M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
-                        <!-- Ícone da lua (modo escuro) -->
                         <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
                     
                     <!-- Informações do Usuário -->
-                    <a href="configuracoes.html" class="user-info" style="text-decoration: none; color: inherit; cursor: pointer;">
+                    <div class="user-info">
                         <span class="user-name" id="userNameDisplay">Administrador</span>
                         <div class="user-avatar">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -104,6 +102,59 @@
             </header>
 
             <div class="page-content">
+                <!-- Cards de resumo -->
+                <div class="transport-summary">
+                    <div class="summary-card">
+                        <div class="summary-icon blue">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 17H7C5.89543 17 5 16.1046 5 15V5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V15C19 16.1046 18.1046 17 17 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 13V21M9 21H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="12" cy="9" r="1" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span>Total de Viagens</span>
+                            <strong id="totalViagens">0</strong>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon green">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span>Concluídas</span>
+                            <strong id="viagensConcluidas">0</strong>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon orange">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span>Em Andamento</span>
+                            <strong id="viagensAndamento">0</strong>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon purple">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 20V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 20V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span>Faturamento</span>
+                            <strong id="faturamentoTotal">R$ 0,00</strong>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Tabs -->
                 <div class="tabs">
                     <button class="tab-btn active" data-tab="viagens">Viagens</button>
@@ -112,17 +163,23 @@
                     <button class="tab-btn" data-tab="clientes">Clientes</button>
                 </div>
 
-                <!-- Tab Content: Viagens -->
+                <!-- Tab Viagens -->
                 <div class="tab-content active" id="tab-viagens">
                     <div class="toolbar">
                         <div class="search-box">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.75" stroke="#6b7280" stroke-width="1.5"/><path d="M13 13L17.5 17.5" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"/></svg>
                             <input type="text" id="searchViagens" placeholder="Pesquisar viagens...">
                         </div>
-                        <button class="btn btn-primary" onclick="openModal('modalViagem')">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.16666V15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                            Nova Viagem
-                        </button>
+                        <div>
+                            <button class="btn btn-primary" onclick="openModal('modalViagem')">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.16666V15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                Nova Viagem
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportViagensExcel()" style="margin-left:8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Exportar Excel
+                            </button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table class="data-table">
@@ -133,109 +190,97 @@
                                     <th>Destino</th>
                                     <th>Motorista</th>
                                     <th>Veículo</th>
+                                    <th>Data</th>
                                     <th>Status</th>
                                     <th>Valor (R$)</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="tableViagens">
-                                <!-- Populated by JavaScript -->
-                            </tbody>
+                            <tbody id="tableViagens"></tbody>
                         </table>
                     </div>
-                    <div class="pagination" id="paginationViagens"></div>
                 </div>
 
-                <!-- Tab Content: Veículos -->
+                <!-- Tab Veículos -->
                 <div class="tab-content" id="tab-veiculos">
                     <div class="toolbar">
                         <div class="search-box">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.75" stroke="#6b7280" stroke-width="1.5"/><path d="M13 13L17.5 17.5" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"/></svg>
                             <input type="text" id="searchVeiculos" placeholder="Pesquisar veículos...">
                         </div>
-                        <button class="btn btn-primary" onclick="openModal('modalVeiculo')">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.16666V15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                            Novo Veículo
-                        </button>
+                        <div>
+                            <button class="btn btn-primary" onclick="openModal('modalVeiculo')">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.16666V15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                Novo Veículo
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportVeiculosExcel()" style="margin-left:8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Exportar Excel
+                            </button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Placa</th>
-                                    <th>Modelo</th>
-                                    <th>Ano</th>
-                                    <th>Capacidade</th>
-                                    <th>Status</th>
-                                    <th>Ações</th>
-                                </tr>
+                                <tr><th>ID</th><th>Placa</th><th>Modelo</th><th>Ano</th><th>Capacidade</th><th>Status</th><th>Ações</th></tr>
                             </thead>
-                            <tbody id="tableVeiculos">
-                                <!-- Populated by JavaScript -->
-                            </tbody>
+                            <tbody id="tableVeiculos"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Tab Content: Motoristas -->
+                <!-- Tab Motoristas -->
                 <div class="tab-content" id="tab-motoristas">
                     <div class="toolbar">
                         <div class="search-box">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.75" stroke="#6b7280" stroke-width="1.5"/><path d="M13 13L17.5 17.5" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"/></svg>
                             <input type="text" id="searchMotoristas" placeholder="Pesquisar motoristas...">
                         </div>
-                        <button class="btn btn-primary" onclick="openModal('modalMotorista')">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.16666V15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                            Novo Motorista
-                        </button>
+                        <div>
+                            <button class="btn btn-primary" onclick="openModal('modalMotorista')">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.16666V15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                Novo Motorista
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportMotoristasExcel()" style="margin-left:8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Exportar Excel
+                            </button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>CNH</th>
-                                    <th>Telefone</th>
-                                    <th>Status</th>
-                                    <th>Ações</th>
-                                </tr>
+                                <tr><th>ID</th><th>Nome</th><th>CNH</th><th>Telefone</th><th>Status</th><th>Ações</th></tr>
                             </thead>
-                            <tbody id="tableMotoristas">
-                                <!-- Populated by JavaScript -->
-                            </tbody>
+                            <tbody id="tableMotoristas"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Tab Content: Clientes -->
+                <!-- Tab Clientes -->
                 <div class="tab-content" id="tab-clientes">
                     <div class="toolbar">
                         <div class="search-box">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.75" stroke="#6b7280" stroke-width="1.5"/><path d="M13 13L17.5 17.5" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"/></svg>
                             <input type="text" id="searchClientes" placeholder="Pesquisar clientes...">
                         </div>
-                        <button class="btn btn-primary" onclick="openModal('modalCliente')">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.16666V15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                            Novo Cliente
-                        </button>
+                        <div>
+                            <button class="btn btn-primary" onclick="openModal('modalCliente')">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.16666V15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                Novo Cliente
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportClientesExcel()" style="margin-left:8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Exportar Excel
+                            </button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>CNPJ/CPF</th>
-                                    <th>Telefone</th>
-                                    <th>Cidade</th>
-                                    <th>Ações</th>
-                                </tr>
+                                <tr><th>ID</th><th>Nome</th><th>CNPJ/CPF</th><th>Telefone</th><th>Cidade</th><th>Ações</th></tr>
                             </thead>
-                            <tbody id="tableClientes">
-                                <!-- Populated by JavaScript -->
-                            </tbody>
+                            <tbody id="tableClientes"></tbody>
                         </table>
                     </div>
                 </div>
@@ -253,32 +298,17 @@
             <form id="formViagem" class="modal-body">
                 <input type="hidden" id="viagemId">
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Origem</label>
-                        <input type="text" id="viagemOrigem" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Destino</label>
-                        <input type="text" id="viagemDestino" required>
-                    </div>
+                    <div class="form-group"><label>Origem</label><input type="text" id="viagemOrigem" required></div>
+                    <div class="form-group"><label>Destino</label><input type="text" id="viagemDestino" required></div>
+                    <div class="form-group"><label>Data</label><input type="date" id="viagemData"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Motorista</label>
-                        <select id="viagemMotorista" required></select>
-                    </div>
-                    <div class="form-group">
-                        <label>Veículo</label>
-                        <select id="viagemVeiculo" required></select>
-                    </div>
+                    <div class="form-group"><label>Motorista</label><select id="viagemMotorista" required></select></div>
+                    <div class="form-group"><label>Veículo</label><select id="viagemVeiculo" required></select></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Valor (R$)</label>
-                        <input type="number" id="viagemValor" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Status</label>
+                    <div class="form-group"><label>Valor (R$)</label><input type="number" id="viagemValor" step="0.01" required></div>
+                    <div class="form-group"><label>Status</label>
                         <select id="viagemStatus">
                             <option value="Pendente">Pendente</option>
                             <option value="Em andamento">Em andamento</option>
@@ -292,7 +322,7 @@
         </div>
     </div>
 
-    <!-- Similar modals for Veículo, Motorista, Cliente -->
+    <!-- Modal Veículo -->
     <div class="modal" id="modalVeiculo">
         <div class="modal-content">
             <div class="modal-header">
@@ -321,6 +351,7 @@
         </div>
     </div>
 
+    <!-- Modal Motorista -->
     <div class="modal" id="modalMotorista">
         <div class="modal-content">
             <div class="modal-header">
@@ -348,6 +379,7 @@
         </div>
     </div>
 
+    <!-- Modal Cliente -->
     <div class="modal" id="modalCliente">
         <div class="modal-content">
             <div class="modal-header">

@@ -893,3 +893,46 @@ function downloadRelatorio(tipo) {
     generateDetailedReport(tipo, getPeriodoFiltro());
     setTimeout(() => exportReport('csv'), 600);
 }
+function exportToPDF(){
+
+    const conteudo = document.getElementById("reportResultCard");
+
+    const janela = window.open("");
+
+    janela.document.write(`
+        <html>
+        <head>
+        <title>Relatório TransCloud</title>
+
+        <style>
+        body{
+            font-family:Arial;
+            padding:20px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        td,th{
+            border:1px solid #ddd;
+            padding:8px;
+        }
+
+        </style>
+
+        </head>
+
+        <body>
+
+        ${conteudo.innerHTML}
+
+        </body>
+        </html>
+    `);
+
+
+    janela.print();
+
+}
