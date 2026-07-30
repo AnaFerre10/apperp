@@ -1,8 +1,8 @@
 /**
- * TransCloud ERP - Tutorial com Design Original & Destaque Aumentado
+ * TransCloud ERP - Tutorial Interativo
  */
 
-// Injeta os estilos originais + destaque luminoso
+// Estilos mantidos exatamente como estão
 (function injectTourStyles() {
     if (document.getElementById('tourStyleInject')) return;
     const style = document.createElement('style');
@@ -12,22 +12,22 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 9998; opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
-            background-color: rgba(0, 0, 0, 0.45);
+            background-color: rgba(0, 0, 0, 0.3);
         }
         .tour-overlay.active { opacity: 1; visibility: visible; }
         
-        /* Borda e iluminação para deixar a área destacada bem clara e nítida */
         .tour-spotlight {
             position: fixed; z-index: 9999; border-radius: 10px;
             border: 2px solid #1a73e8;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6), 0 0 20px rgba(26, 115, 232, 0.5);
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35), 0 0 25px rgba(26, 115, 232, 0.5);
             transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease, left 0.3s ease, width 0.3s ease, height 0.3s ease;
             pointer-events: none; opacity: 0; visibility: hidden;
-            background: transparent;
+            background-color: rgba(255, 255, 255, 0.12);
+            backdrop-filter: brightness(1.2);
+            -webkit-backdrop-filter: brightness(1.2);
         }
         .tour-spotlight.active { opacity: 1; visibility: visible; }
         
-        /* Layout e Tipografia Originais */
         .tour-popover {
             position: fixed; z-index: 10000; width: 320px; background-color: #ffffff; color: #1f2937;
             border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -43,7 +43,6 @@
         .tour-popover-body { font-size: 14px; line-height: 1.5; margin-bottom: 20px; color: inherit; }
         .tour-popover-footer { display: flex; justify-content: space-between; align-items: center; }
         
-        /* Botões com Tamanhos e Cores Originais */
         .tour-btn { border: none; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .tour-btn-skip { background: transparent; color: #6b7280; }
         body.dark-theme .tour-btn-skip { color: #9ca3af; }
@@ -66,14 +65,12 @@ const tourStepsDashboard = [
     { element: '#navTutorialBtn', title: 'Ajuda e Tutorial', description: 'Precisa rever este passo a passo? Basta clicar no botão Tutorial a qualquer momento.', position: 'right' }
 ];
 
-// Passos de Configurações (6 Passos)
+// Passos de Configurações (Sem "Formulário de Dados" e "Notificações por E-mail")
 const tourStepsConfiguracoes = [
     { element: '#sidebar', title: 'Navegação Principal', description: 'Acesse rapidamente qualquer módulo do sistema.', position: 'right' },
     { element: '#themeToggle', title: 'Alternar Tema', description: 'Troque entre o tema claro e escuro quando preferir.', position: 'bottom' },
     { element: '#cardMinhasInformacoes', title: 'Minhas Informações', description: 'Gerencie seus dados de perfil e atualize sua senha de acesso.', position: 'right' },
-    { element: '#accountForm', title: 'Formulário de Dados', description: 'Altere seu nome, e-mail corporativo ou senha e clique em Salvar.', position: 'bottom' },
-    { element: '#cardOpcoesSistema', title: 'Opções do Sistema', description: 'Ajuste avisos, notificações por e-mail e rotinas de backup.', position: 'left' },
-    { element: '#itemNotificacoes', title: 'Notificações por E-mail', description: 'Ative ou desative o envio de relatórios e alertas automáticos.', position: 'bottom' }
+    { element: '#cardOpcoesSistema', title: 'Opções do Sistema', description: 'Ajuste avisos, notificações por e-mail e rotinas de backup.', position: 'left' }
 ];
 
 let currentStepIndex = 0;
