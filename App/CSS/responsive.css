@@ -1,57 +1,104 @@
 /* ============================================
-   Responsive Styles
+   Responsive Styles - CORRIGIDO
    ============================================ */
 
-@media (max-width: 1024px) {
+/* Tablet e Desktop - Sidebar normal */
+@media (min-width: 769px) {
     .sidebar {
+        width: var(--sidebar-width);
+        transform: translateX(0);
+    }
+    
+    .sidebar.collapsed {
         width: var(--sidebar-collapsed);
     }
     
-    .sidebar .logo span,
-    .sidebar .nav-item span,
-    .sidebar .btn-logout span {
+    .sidebar.collapsed .logo span,
+    .sidebar.collapsed .nav-item span,
+    .sidebar.collapsed .btn-logout span {
         display: none;
     }
     
-    .sidebar .nav-item {
+    .sidebar.collapsed .nav-item {
         justify-content: center;
         padding: 12px;
     }
     
+    .sidebar.collapsed .sidebar-header {
+        justify-content: center;
+    }
+    
+    .sidebar.collapsed .sidebar-toggle {
+        margin: 0 auto;
+    }
+    
     .main-content {
+        margin-left: var(--sidebar-width);
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .sidebar.collapsed ~ .main-content {
         margin-left: var(--sidebar-collapsed);
     }
     
-    .charts-grid {
-        grid-template-columns: 1fr;
+    .sidebar-toggle {
+        display: flex;
     }
 }
 
+/* Mobile - Sidebar como overlay */
 @media (max-width: 768px) {
     .sidebar {
-        transform: translateX(-100%);
+        position: fixed;
+        top: 0;
+        left: 0;
         width: var(--sidebar-width);
+        height: 100vh;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: none;
     }
     
     .sidebar.mobile-open {
         transform: translateX(0);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
     }
     
-    .sidebar.mobile-open .logo span,
-    .sidebar.mobile-open .nav-item span,
-    .sidebar.mobile-open .btn-logout span {
+    /* Overlay escuro quando sidebar mobile está aberta */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+    
+    .sidebar.mobile-open + .sidebar-overlay {
+        display: block;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+    
+    /* Mostrar ícones e textos no mobile */
+    .sidebar .logo span,
+    .sidebar .nav-item span,
+    .sidebar .btn-logout span {
         display: inline;
     }
     
-    .sidebar.mobile-open .nav-item {
+    .sidebar .nav-item {
         justify-content: flex-start;
         padding: 12px 20px;
     }
     
-    .main-content {
-        margin-left: 0;
-    }
-    
+    /* Ajustes gerais para mobile */
     .kpi-grid {
         grid-template-columns: 1fr 1fr;
     }
@@ -62,6 +109,7 @@
     
     .tabs {
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .topbar {
@@ -85,14 +133,15 @@
     .tutorial-navigation button {
         width: 100%;
     }
-}
-
-@media (max-width: 480px) {
-    .kpi-grid {
-        grid-template-columns: 1fr;
-    }
     
     .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Smartphones pequenos */
+@media (max-width: 480px) {
+    .kpi-grid {
         grid-template-columns: 1fr;
     }
     
@@ -107,5 +156,9 @@
     .modal-content {
         width: 95%;
         margin: 10px;
+    }
+    
+    .user-name {
+        display: none;
     }
 }
