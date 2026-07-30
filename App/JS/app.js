@@ -4,16 +4,16 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Configuração da sidebar
-    setupSidebar();
-    
     // Configura nome do usuário padrão
     const userNameDisplay = document.getElementById('userNameDisplay');
     if (userNameDisplay) {
         userNameDisplay.textContent = 'Administrador';
     }
     
-    // Verifica tutorial
+    // Configuração da sidebar
+    setupSidebar();
+    
+    // Verifica tutorial (apenas se não estiver na página de tutorial)
     checkTutorial();
 });
 
@@ -39,7 +39,10 @@ function setupSidebar() {
     navItems.forEach(item => {
         item.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
-                sidebar.classList.remove('mobile-open');
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) {
+                    sidebar.classList.remove('mobile-open');
+                }
             }
         });
     });
@@ -52,7 +55,12 @@ function checkTutorial() {
     const tutorialDone = localStorage.getItem(STORAGE_KEYS.TUTORIAL_DONE);
     const currentPage = window.location.pathname.split('/').pop();
     
-    if (!tutorialDone && currentPage !== 'tutorial.html' && currentPage !== '' && currentPage !== 'index.html') {
+    // Não mostra o toast no index.html ou tutorial.html
+    if (!tutorialDone && 
+        currentPage !== 'tutorial.html' && 
+        currentPage !== '' && 
+        currentPage !== 'index.html' &&
+        currentPage !== 'dashboard.html') {
         setTimeout(() => {
             showToast('Bem-vindo! Que tal fazer o tutorial para conhecer o sistema?', 'info');
         }, 1000);
@@ -60,7 +68,7 @@ function checkTutorial() {
 }
 
 /**
- * Realiza logout (apenas limpa dados e recarrega)
+ * Realiza logout
  */
 function logout() {
     showToast('Sessão encerrada com sucesso!', 'success');
