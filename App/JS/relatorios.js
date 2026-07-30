@@ -289,7 +289,7 @@ function loadDeliveriesChart() {
                 data: [contagem.concluidas, contagem.emAndamento, contagem.pendentes, contagem.canceladas],
                 backgroundColor: ['#059669', '#2563eb', '#d97706', '#dc2626'],
                 borderWidth: 0,
-                borderRadius: 8
+                borderRadius: 0
             }]
         },
         options: {
