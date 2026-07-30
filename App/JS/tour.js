@@ -1,5 +1,5 @@
 /**
- * TransCloud ERP - Tutorial Interativo (com suporte a múltiplas páginas)
+ * TransCloud ERP - Tutorial Interativo Multi-Páginas
  */
 
 (function injectTourStyles() {
@@ -11,19 +11,19 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 9998; opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
-            background-color: rgba(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.4);
         }
         .tour-overlay.active { opacity: 1; visibility: visible; }
         
         .tour-spotlight {
             position: fixed; z-index: 9999; border-radius: 10px;
             border: 2px solid #1a73e8;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35), 0 0 25px rgba(26, 115, 232, 0.5);
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4), 0 0 25px rgba(26, 115, 232, 0.5);
             transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease, left 0.3s ease, width 0.3s ease, height 0.3s ease;
             pointer-events: none; opacity: 0; visibility: hidden;
-            background-color: rgba(255, 255, 255, 0.12);
-            backdrop-filter: brightness(1.2);
-            -webkit-backdrop-filter: brightness(1.2);
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: brightness(1.1);
+            -webkit-backdrop-filter: brightness(1.1);
         }
         .tour-spotlight.active { opacity: 1; visibility: visible; }
         
@@ -56,112 +56,38 @@
 
 // ==================== DEFINIÇÃO DE PASSOS POR PÁGINA ====================
 
-// Passos para o Dashboard
 const tourStepsDashboard = [
-    { 
-        element: '#sidebar', 
-        title: 'Navegação Principal', 
-        description: 'Acesse rapidamente os módulos do sistema: Dashboard, Transportes, Relatórios e Configurações.', 
-        position: 'right' 
-    },
-    { 
-        element: '#themeToggle', 
-        title: 'Alternar Tema', 
-        description: 'Alterne entre o tema claro e escuro do sistema para melhor conforto visual.', 
-        position: 'bottom' 
-    },
-    { 
-        element: '.kpi-grid', 
-        title: 'Indicadores Principais (KPIs)', 
-        description: 'Acompanhe resumos em tempo real sobre viagens em andamento, entregas concluídas e alertas.', 
-        position: 'bottom' 
-    },
-    { 
-        element: '.charts-grid', 
-        title: 'Gráficos de Desempenho', 
-        description: 'Análise estatística e evolução dos transportes visualmente por período.', 
-        position: 'top' 
-    },
-    { 
-        element: '#tableEntregas', 
-        title: 'Últimas Entregas', 
-        description: 'Veja os registros mais recentes e acompanhe o status de cada carga.', 
-        position: 'top' 
-    },
-    { 
-        element: '#recentActivities', 
-        title: 'Atividades Recentes', 
-        description: 'Acompanhe as movimentações em tempo real do sistema.', 
-        position: 'top' 
-    }
+    { element: '#sidebar', title: 'Navegação Principal', description: 'Acesse rapidamente os módulos do sistema.', position: 'right' },
+    { element: '#themeToggle', title: 'Alternar Tema', description: 'Alterne entre o tema claro e escuro.', position: 'bottom' },
+    { element: '.kpi-grid', title: 'Indicadores (KPIs)', description: 'Resumos em tempo real sobre viagens e entregas.', position: 'bottom' },
+    { element: '.charts-grid', title: 'Gráficos', description: 'Análise estatística do desempenho.', position: 'top' },
+    { element: '#tableEntregas', title: 'Últimas Entregas', description: 'Status dos registros recentes.', position: 'top' },
+    { element: '#recentActivities', title: 'Atividades Recentes', description: 'Movimentações no sistema.', position: 'top' }
 ];
 
-// Passos para a página de Transportes
 const tourStepsTransportes = [
-    { 
-        element: '#sidebar', 
-        title: 'Navegação Principal', 
-        description: 'Acesse rapidamente os módulos do sistema: Dashboard, Transportes, Relatórios e Configurações.', 
-        position: 'right' 
-    },
-    { 
-        element: '.transport-summary', 
-        title: 'Resumo de Transportes', 
-        description: 'Veja os principais indicadores: total de viagens, concluídas, em andamento e faturamento.', 
-        position: 'bottom' 
-    },
-    { 
-        element: '.tabs', 
-        title: 'Abas de Navegação', 
-        description: 'Navegue entre Viagens, Veículos, Motoristas e Clientes para gerenciar cada área.', 
-        position: 'bottom' 
-    },
-    { 
-        element: '#tab-viagens .toolbar', 
-        title: 'Busca e Ações', 
-        description: 'Pesquise registros, adicione novas viagens ou exporte dados para Excel.', 
-        position: 'bottom' 
-    },
-    { 
-        element: '#tableViagens', 
-        title: 'Lista de Viagens', 
-        description: 'Visualize todas as viagens cadastradas com seus detalhes e status.', 
-        position: 'top' 
-    },
-    { 
-        element: '#tab-viagens .btn-primary', 
-        title: 'Nova Viagem', 
-        description: 'Clique aqui para cadastrar uma nova viagem com origem, destino, motorista e valor.', 
-        position: 'bottom' 
-    }
+    { element: '#sidebar', title: 'Navegação Principal', description: 'Acesse rapidamente qualquer módulo.', position: 'right' },
+    { element: '.transport-summary', title: 'Resumo de Transportes', description: 'Indicadores principais da frota.', position: 'bottom' },
+    { element: '.tabs', title: 'Abas de Navegação', description: 'Gerencie Viagens, Veículos, Motoristas e Clientes.', position: 'bottom' },
+    { element: '#tab-viagens .toolbar', title: 'Busca e Ações', description: 'Filtre dados ou exporte relatórios.', position: 'bottom' },
+    { element: '#tableViagens', title: 'Lista de Viagens', description: 'Detalhes completos das viagens cadastradas.', position: 'top' },
+    { element: '#tab-viagens .btn-primary', title: 'Nova Viagem', description: 'Cadastre novas operações de transporte.', position: 'bottom' }
 ];
 
-// Passos para Configurações
+const tourStepsRelatorios = [
+    { element: '#sidebar', title: 'Navegação Principal', description: 'Acesse rapidamente qualquer módulo do sistema.', position: 'right' },
+    { element: '#themeToggle', title: 'Alternar Tema', description: 'Alterne visualização entre modo claro e escuro.', position: 'bottom' },
+    { element: '.card:has(#btnFiltrar)', title: 'Filtros de Pesquisa', description: 'Filtre seus relatórios por intervalo de datas e tipo específico.', position: 'bottom' },
+    { element: '.reports-grid', title: 'Catálogo de Relatórios', description: 'Escolha o tipo de relatório gerencial que deseja consultar.', position: 'top' },
+    { element: '.charts-grid', title: 'Gráficos Comparativos', description: 'Acompanhe visualmente as métricas financeiras e operacionais.', position: 'top' },
+    { element: '#historicoCard', title: 'Histórico', description: 'Consulte os últimos relatórios gerados recentemente.', position: 'top' }
+];
+
 const tourStepsConfiguracoes = [
-    { 
-        element: '#sidebar', 
-        title: 'Navegação Principal', 
-        description: 'Acesse rapidamente qualquer módulo do sistema.', 
-        position: 'right' 
-    },
-    { 
-        element: '#themeToggle', 
-        title: 'Alternar Tema', 
-        description: 'Troque entre o tema claro e escuro quando preferir.', 
-        position: 'bottom' 
-    },
-    { 
-        element: '#cardMinhasInformacoes', 
-        title: 'Minhas Informações', 
-        description: 'Gerencie seus dados de perfil e atualize sua senha de acesso.', 
-        position: 'right' 
-    },
-    { 
-        element: '#cardOpcoesSistema', 
-        title: 'Opções do Sistema', 
-        description: 'Ajuste avisos, notificações por e-mail e rotinas de backup.', 
-        position: 'left' 
-    }
+    { element: '#sidebar', title: 'Navegação Principal', description: 'Acesse rapidamente qualquer módulo.', position: 'right' },
+    { element: '#themeToggle', title: 'Alternar Tema', description: 'Troque a aparência do sistema.', position: 'bottom' },
+    { element: '#cardMinhasInformacoes', title: 'Minhas Informações', description: 'Gerencie dados do seu perfil e senha.', position: 'right' },
+    { element: '#cardOpcoesSistema', title: 'Opções do Sistema', description: 'Ajuste notificações e rotinas de backup.', position: 'left' }
 ];
 
 // ==================== LÓGICA PRINCIPAL ====================
@@ -171,20 +97,19 @@ let spotlightEl = null;
 let popoverEl = null;
 let overlayEl = null;
 
-/**
- * Detecta qual página está ativa e retorna os steps correspondentes.
- */
 function getActiveSteps() {
     const path = window.location.pathname;
-    // Detecta Transportes
+    
     if (path.includes('transportes') || document.querySelector('.transport-summary')) {
         return tourStepsTransportes;
     }
-    // Detecta Configurações
+    if (path.includes('relatorios') || document.querySelector('.reports-grid')) {
+        return tourStepsRelatorios;
+    }
     if (path.includes('configuracoes') || document.getElementById('cardMinhasInformacoes')) {
         return tourStepsConfiguracoes;
     }
-    // Padrão: Dashboard
+    
     return tourStepsDashboard;
 }
 
@@ -244,30 +169,31 @@ function showStep(index) {
     const step = steps[index];
     if (!step) return;
 
-    // Tenta encontrar o elemento alvo usando os seletores
     const selectors = step.element.split(',');
     let target = null;
     for (let sel of selectors) {
-        let el = document.querySelector(sel.trim());
-        if (el && el.offsetWidth > 0 && el.offsetHeight > 0) {
-            target = el;
-            break;
+        try {
+            let el = document.querySelector(sel.trim());
+            if (el && el.offsetWidth > 0 && el.offsetHeight > 0) {
+                target = el;
+                break;
+            }
+        } catch(e) {
+            // Tratamento caso o seletor CSS seja inválido em navegadores antigos
         }
     }
 
-    // Fallback: se não encontrar, usa o main-content ou body
     if (!target) {
         target = document.querySelector('.main-content') || document.body;
     }
 
-    // Rola até o elemento se não for fixed
     if (!isFixed(target)) {
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     setTimeout(() => {
         renderStepContent(target, step, index, steps.length);
-    }, 200); // pequeno delay para o scroll
+    }, 250);
 }
 
 function renderStepContent(target, step, index, totalSteps) {
@@ -286,10 +212,10 @@ function renderStepContent(target, step, index, totalSteps) {
         </div>
         <div class="tour-popover-body">${step.description}</div>
         <div class="tour-popover-footer">
-            <button class="tour-btn tour-btn-skip" onclick="endTour()">Pular</button>
+            <button class="tour-btn tour-btn-skip" onclick="window.endTour()">Pular</button>
             <div class="tour-btn-nav">
-                ${index > 0 ? `<button class="tour-btn tour-btn-prev" onclick="prevStep()">Anterior</button>` : ''}
-                <button class="tour-btn tour-btn-next" onclick="nextStep()">
+                ${index > 0 ? `<button class="tour-btn tour-btn-prev" onclick="window.prevStep()">Anterior</button>` : ''}
+                <button class="tour-btn tour-btn-next" onclick="window.nextStep()">
                     ${index === totalSteps - 1 ? 'Concluir' : 'Próximo'}
                 </button>
             </div>
@@ -325,7 +251,6 @@ function positionPopover(targetRect, position) {
             break;
     }
 
-    // Ajusta para não sair da tela
     if (left < 10) left = 10;
     if (left + popoverRect.width > window.innerWidth - 10) {
         left = window.innerWidth - popoverRect.width - 10;
@@ -362,11 +287,10 @@ function prevStep() {
     }
 }
 
-// Expor funções globalmente
+// Exposição explícita no escopo global
 window.startTour = startTour;
 window.endTour = endTour;
 window.nextStep = nextStep;
 window.prevStep = prevStep;
 
-// Inicializa ao carregar a página
 document.addEventListener('DOMContentLoaded', initTour);
