@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -166,7 +167,7 @@
 
                 <!-- Cards de Relatórios -->
                 <div class="reports-grid">
-                    <div class="report-card" onclick="generateReport('viagens')">
+                    <div class="report-card" data-report="viagens">
                         <div class="report-icon">
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="48" height="48" rx="12" fill="#e3f2fd"/>
@@ -178,7 +179,7 @@
                         <span class="badge badge-info">Atualizado</span>
                     </div>
                     
-                    <div class="report-card" onclick="generateReport('financeiro')">
+                    <div class="report-card" data-report="financeiro">
                         <div class="report-icon">
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="48" height="48" rx="12" fill="#e8f5e9"/>
@@ -190,7 +191,7 @@
                         <span class="badge badge-success">Disponível</span>
                     </div>
                     
-                    <div class="report-card" onclick="generateReport('motoristas')">
+                   <div class="report-card" data-report="motoristas">
                         <div class="report-icon">
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="48" height="48" rx="12" fill="#fff3e0"/>
@@ -203,7 +204,7 @@
                         <span class="badge badge-info">Atualizado</span>
                     </div>
                     
-                    <div class="report-card" onclick="generateReport('veiculos')">
+                    <div class="report-card" data-report="veiculos">
                         <div class="report-icon">
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="48" height="48" rx="12" fill="#fce4ec"/>
@@ -217,7 +218,7 @@
                         <span class="badge badge-warning">Pendente</span>
                     </div>
                     
-                    <div class="report-card" onclick="generateReport('entregas')">
+                    <div class="report-card" data-report="entregas">
                         <div class="report-icon">
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="48" height="48" rx="12" fill="#f3e5f5"/>
@@ -433,6 +434,31 @@
         function imprimirRelatorio() {
             window.print();
         }
+        function exportToExcel(){
+
+    const tabela = document.querySelector(
+        "#tabelaRelatorio"
+    );
+
+
+    if(!tabela){
+
+        alert("Gere um relatório primeiro");
+
+        return;
+    }
+
+
+    const workbook =
+        XLSX.utils.table_to_book(tabela);
+
+
+    XLSX.writeFile(
+        workbook,
+        "Relatorio_TransCloud.xlsx"
+    );
+
+}
     </script>
 </body>
 </html>

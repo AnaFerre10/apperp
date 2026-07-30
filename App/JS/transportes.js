@@ -1,8 +1,4 @@
-/**
- * TransCloud ERP - Transportes Module
- * Gerencia CRUD de viagens, veículos, motoristas e clientes
- */
-
+// transportes.js
 document.addEventListener('DOMContentLoaded', function() {
     if (!document.querySelector('.tabs')) return;
     
@@ -15,9 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFormListeners();
 });
 
-/**
- * Configura as abas
- */
 function setupTabs() {
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -39,9 +32,6 @@ function setupTabs() {
     });
 }
 
-/**
- * Popula os selects de motorista e veículo nos formulários
- */
 function populateSelects() {
     const motoristas = getData(STORAGE_KEYS.MOTORISTAS);
     const veiculos = getData(STORAGE_KEYS.VEICULOS);
@@ -60,13 +50,24 @@ function populateSelects() {
     }
 }
 
-/**
- * Carrega lista de viagens
- */
+function updateTransportDashboard() {
+    const viagens = getData(STORAGE_KEYS.VIAGENS);
+    
+    const totalViagens = viagens.length;
+    const concluidas = viagens.filter(v => v.status === 'Concluída').length;
+    const andamento = viagens.filter(v => v.status === 'Em andamento').length;
+    const faturamento = viagens.reduce((acc, v) => acc + (v.valor || 0), 0);
+    
+    document.getElementById('totalViagens').innerText = totalViagens;
+    document.getElementById('viagensConcluidas').innerText = concluidas;
+    document.getElementById('viagensAndamento').innerText = andamento;
+    document.getElementById('faturamentoTotal').innerText = formatCurrency(faturamento);
+}
+
+// ====== LOAD TABLES ======
 function loadViagens() {
     const viagens = getData(STORAGE_KEYS.VIAGENS);
     const tbody = document.getElementById('tableViagens');
-    
     if (!tbody) return;
     
     tbody.innerHTML = viagens.map(viagem => `
@@ -76,6 +77,7 @@ function loadViagens() {
             <td>${viagem.destino}</td>
             <td>${viagem.motorista}</td>
             <td>${viagem.veiculo}</td>
+            <td>${viagem.data || '-'}</td>
             <td><span class="badge badge-${getStatusClass(viagem.status)}">${viagem.status}</span></td>
             <td>${formatCurrency(viagem.valor)}</td>
             <td>
@@ -96,15 +98,12 @@ function loadViagens() {
     `).join('');
     
     populateSelects();
+    updateTransportDashboard();
 }
 
-/**
- * Carrega lista de veículos
- */
 function loadVeiculos() {
     const veiculos = getData(STORAGE_KEYS.VEICULOS);
     const tbody = document.getElementById('tableVeiculos');
-    
     if (!tbody) return;
     
     tbody.innerHTML = veiculos.map(veiculo => `
@@ -133,13 +132,9 @@ function loadVeiculos() {
     `).join('');
 }
 
-/**
- * Carrega lista de motoristas
- */
 function loadMotoristas() {
     const motoristas = getData(STORAGE_KEYS.MOTORISTAS);
     const tbody = document.getElementById('tableMotoristas');
-    
     if (!tbody) return;
     
     tbody.innerHTML = motoristas.map(motorista => `
@@ -167,13 +162,9 @@ function loadMotoristas() {
     `).join('');
 }
 
-/**
- * Carrega lista de clientes
- */
 function loadClientes() {
     const clientes = getData(STORAGE_KEYS.CLIENTES);
     const tbody = document.getElementById('tableClientes');
-    
     if (!tbody) return;
     
     tbody.innerHTML = clientes.map(cliente => `
@@ -201,98 +192,51 @@ function loadClientes() {
     `).join('');
 }
 
-/**
- * Configura listeners de pesquisa
- */
 function setupSearchListeners() {
-    const searchViagens = document.getElementById('searchViagens');
-    const searchVeiculos = document.getElementById('searchVeiculos');
-    const searchMotoristas = document.getElementById('searchMotoristas');
-    const searchClientes = document.getElementById('searchClientes');
-    
-    if (searchViagens) {
-        searchViagens.addEventListener('input', debounce(function(e) {
-            filterTable('tableViagens', e.target.value);
-        }, 300));
-    }
-    
-    if (searchVeiculos) {
-        searchVeiculos.addEventListener('input', debounce(function(e) {
-            filterTable('tableVeiculos', e.target.value);
-        }, 300));
-    }
-    
-    if (searchMotoristas) {
-        searchMotoristas.addEventListener('input', debounce(function(e) {
-            filterTable('tableMotoristas', e.target.value);
-        }, 300));
-    }
-    
-    if (searchClientes) {
-        searchClientes.addEventListener('input', debounce(function(e) {
-            filterTable('tableClientes', e.target.value);
-        }, 300));
-    }
+    document.getElementById('searchViagens')?.addEventListener('input', debounce(function(e) {
+        filterTable('tableViagens', e.target.value);
+    }, 300));
+    document.getElementById('searchVeiculos')?.addEventListener('input', debounce(function(e) {
+        filterTable('tableVeiculos', e.target.value);
+    }, 300));
+    document.getElementById('searchMotoristas')?.addEventListener('input', debounce(function(e) {
+        filterTable('tableMotoristas', e.target.value);
+    }, 300));
+    document.getElementById('searchClientes')?.addEventListener('input', debounce(function(e) {
+        filterTable('tableClientes', e.target.value);
+    }, 300));
 }
 
-/**
- * Filtra tabela por termo de busca
- */
 function filterTable(tableId, searchTerm) {
     const tbody = document.getElementById(tableId);
     if (!tbody) return;
-    
     const rows = tbody.getElementsByTagName('tr');
     const term = searchTerm.toLowerCase();
-    
     Array.from(rows).forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(term) ? '' : 'none';
+        row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
     });
 }
 
-/**
- * Configura listeners dos formulários
- */
 function setupFormListeners() {
-    const formViagem = document.getElementById('formViagem');
-    const formVeiculo = document.getElementById('formVeiculo');
-    const formMotorista = document.getElementById('formMotorista');
-    const formCliente = document.getElementById('formCliente');
-    
-    if (formViagem) {
-        formViagem.addEventListener('submit', function(e) {
-            e.preventDefault();
-            saveViagem();
-        });
-    }
-    
-    if (formVeiculo) {
-        formVeiculo.addEventListener('submit', function(e) {
-            e.preventDefault();
-            saveVeiculo();
-        });
-    }
-    
-    if (formMotorista) {
-        formMotorista.addEventListener('submit', function(e) {
-            e.preventDefault();
-            saveMotorista();
-        });
-    }
-    
-    if (formCliente) {
-        formCliente.addEventListener('submit', function(e) {
-            e.preventDefault();
-            saveCliente();
-        });
-    }
+    document.getElementById('formViagem')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveViagem();
+    });
+    document.getElementById('formVeiculo')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveVeiculo();
+    });
+    document.getElementById('formMotorista')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveMotorista();
+    });
+    document.getElementById('formCliente')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveCliente();
+    });
 }
 
-// ============================================
-// CRUD - VIAGENS
-// ============================================
-
+// ============ CRUD VIAGENS ============
 function saveViagem() {
     const id = document.getElementById('viagemId').value;
     const viagem = {
@@ -301,21 +245,19 @@ function saveViagem() {
         destino: document.getElementById('viagemDestino').value,
         motorista: document.getElementById('viagemMotorista').value,
         veiculo: document.getElementById('viagemVeiculo').value,
+        data: document.getElementById('viagemData').value,
         status: document.getElementById('viagemStatus').value,
         valor: parseFloat(document.getElementById('viagemValor').value)
     };
     
     const viagens = getData(STORAGE_KEYS.VIAGENS);
-    
     if (id) {
-        // Editar
         const index = viagens.findIndex(v => v.id === parseInt(id));
         if (index !== -1) {
             viagens[index] = viagem;
             showToast('Viagem atualizada com sucesso!', 'success');
         }
     } else {
-        // Novo
         viagem.id = generateId(viagens);
         viagens.push(viagem);
         showToast('Viagem cadastrada com sucesso!', 'success');
@@ -331,13 +273,13 @@ function saveViagem() {
 function editViagem(id) {
     const viagens = getData(STORAGE_KEYS.VIAGENS);
     const viagem = viagens.find(v => v.id === id);
-    
     if (viagem) {
         document.getElementById('viagemId').value = viagem.id;
         document.getElementById('viagemOrigem').value = viagem.origem;
         document.getElementById('viagemDestino').value = viagem.destino;
         document.getElementById('viagemMotorista').value = viagem.motorista;
         document.getElementById('viagemVeiculo').value = viagem.veiculo;
+        document.getElementById('viagemData').value = viagem.data || '';
         document.getElementById('viagemStatus').value = viagem.status;
         document.getElementById('viagemValor').value = viagem.valor;
         openModal('modalViagem');
@@ -346,18 +288,14 @@ function editViagem(id) {
 
 function deleteViagem(id) {
     if (confirm('Tem certeza que deseja excluir esta viagem?')) {
-        const viagens = getData(STORAGE_KEYS.VIAGENS);
-        const filtered = viagens.filter(v => v.id !== id);
-        saveData(STORAGE_KEYS.VIAGENS, filtered);
+        const viagens = getData(STORAGE_KEYS.VIAGENS).filter(v => v.id !== id);
+        saveData(STORAGE_KEYS.VIAGENS, viagens);
         loadViagens();
         showToast('Viagem excluída com sucesso!', 'success');
     }
 }
 
-// ============================================
-// CRUD - VEÍCULOS
-// ============================================
-
+// ============ CRUD VEÍCULOS ============
 function saveVeiculo() {
     const id = document.getElementById('veiculoId').value;
     const veiculo = {
@@ -370,7 +308,6 @@ function saveVeiculo() {
     };
     
     const veiculos = getData(STORAGE_KEYS.VEICULOS);
-    
     if (id) {
         const index = veiculos.findIndex(v => v.id === parseInt(id));
         if (index !== -1) {
@@ -393,7 +330,6 @@ function saveVeiculo() {
 function editVeiculo(id) {
     const veiculos = getData(STORAGE_KEYS.VEICULOS);
     const veiculo = veiculos.find(v => v.id === id);
-    
     if (veiculo) {
         document.getElementById('veiculoId').value = veiculo.id;
         document.getElementById('veiculoPlaca').value = veiculo.placa;
@@ -407,18 +343,14 @@ function editVeiculo(id) {
 
 function deleteVeiculo(id) {
     if (confirm('Tem certeza que deseja excluir este veículo?')) {
-        const veiculos = getData(STORAGE_KEYS.VEICULOS);
-        const filtered = veiculos.filter(v => v.id !== id);
-        saveData(STORAGE_KEYS.VEICULOS, filtered);
+        const veiculos = getData(STORAGE_KEYS.VEICULOS).filter(v => v.id !== id);
+        saveData(STORAGE_KEYS.VEICULOS, veiculos);
         loadVeiculos();
         showToast('Veículo excluído com sucesso!', 'success');
     }
 }
 
-// ============================================
-// CRUD - MOTORISTAS
-// ============================================
-
+// ============ CRUD MOTORISTAS ============
 function saveMotorista() {
     const id = document.getElementById('motoristaId').value;
     const motorista = {
@@ -430,7 +362,6 @@ function saveMotorista() {
     };
     
     const motoristas = getData(STORAGE_KEYS.MOTORISTAS);
-    
     if (id) {
         const index = motoristas.findIndex(m => m.id === parseInt(id));
         if (index !== -1) {
@@ -453,7 +384,6 @@ function saveMotorista() {
 function editMotorista(id) {
     const motoristas = getData(STORAGE_KEYS.MOTORISTAS);
     const motorista = motoristas.find(m => m.id === id);
-    
     if (motorista) {
         document.getElementById('motoristaId').value = motorista.id;
         document.getElementById('motoristaNome').value = motorista.nome;
@@ -466,18 +396,14 @@ function editMotorista(id) {
 
 function deleteMotorista(id) {
     if (confirm('Tem certeza que deseja excluir este motorista?')) {
-        const motoristas = getData(STORAGE_KEYS.MOTORISTAS);
-        const filtered = motoristas.filter(m => m.id !== id);
-        saveData(STORAGE_KEYS.MOTORISTAS, filtered);
+        const motoristas = getData(STORAGE_KEYS.MOTORISTAS).filter(m => m.id !== id);
+        saveData(STORAGE_KEYS.MOTORISTAS, motoristas);
         loadMotoristas();
         showToast('Motorista excluído com sucesso!', 'success');
     }
 }
 
-// ============================================
-// CRUD - CLIENTES
-// ============================================
-
+// ============ CRUD CLIENTES ============
 function saveCliente() {
     const id = document.getElementById('clienteId').value;
     const cliente = {
@@ -489,7 +415,6 @@ function saveCliente() {
     };
     
     const clientes = getData(STORAGE_KEYS.CLIENTES);
-    
     if (id) {
         const index = clientes.findIndex(c => c.id === parseInt(id));
         if (index !== -1) {
@@ -512,7 +437,6 @@ function saveCliente() {
 function editCliente(id) {
     const clientes = getData(STORAGE_KEYS.CLIENTES);
     const cliente = clientes.find(c => c.id === id);
-    
     if (cliente) {
         document.getElementById('clienteId').value = cliente.id;
         document.getElementById('clienteNome').value = cliente.nome;
@@ -525,17 +449,13 @@ function editCliente(id) {
 
 function deleteCliente(id) {
     if (confirm('Tem certeza que deseja excluir este cliente?')) {
-        const clientes = getData(STORAGE_KEYS.CLIENTES);
-        const filtered = clientes.filter(c => c.id !== id);
-        saveData(STORAGE_KEYS.CLIENTES, filtered);
+        const clientes = getData(STORAGE_KEYS.CLIENTES).filter(c => c.id !== id);
+        saveData(STORAGE_KEYS.CLIENTES, clientes);
         loadClientes();
         showToast('Cliente excluído com sucesso!', 'success');
     }
 }
 
-/**
- * Retorna a classe CSS baseada no status
- */
 function getStatusClass(status) {
     const classes = {
         'Concluída': 'success',
@@ -549,4 +469,33 @@ function getStatusClass(status) {
         'Inativo': 'danger'
     };
     return classes[status] || 'info';
+}
+
+// ============ EXPORTAÇÕES EXCEL ============
+function exportViagensExcel() {
+    const table = document.querySelector('#tab-viagens .data-table');
+    if (!table) return;
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Viagens" });
+    XLSX.writeFile(wb, "Viagens_TransCloud.xlsx");
+}
+
+function exportVeiculosExcel() {
+    const table = document.querySelector('#tab-veiculos .data-table');
+    if (!table) return;
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Veiculos" });
+    XLSX.writeFile(wb, "Veiculos_TransCloud.xlsx");
+}
+
+function exportMotoristasExcel() {
+    const table = document.querySelector('#tab-motoristas .data-table');
+    if (!table) return;
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Motoristas" });
+    XLSX.writeFile(wb, "Motoristas_TransCloud.xlsx");
+}
+
+function exportClientesExcel() {
+    const table = document.querySelector('#tab-clientes .data-table');
+    if (!table) return;
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Clientes" });
+    XLSX.writeFile(wb, "Clientes_TransCloud.xlsx");
 }
