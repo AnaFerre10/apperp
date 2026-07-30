@@ -2,6 +2,9 @@
  * TransCloud ERP - Dashboard Module
  */
 
+// Variável global para armazenar a instância do gráfico de status
+let chartStatusEntregas = null;
+
 document.addEventListener('DOMContentLoaded', function() {
     if (!document.getElementById('chartViagensDia')) return;
     
@@ -10,13 +13,31 @@ document.addEventListener('DOMContentLoaded', function() {
     loadRecentActivities();
     
     // Event listeners para os botões de ação dos gráficos
-    document.querySelectorAll('.btn-chart-action').forEach(btn => {
+    setupChartActions();
+});
+
+/**
+ * Configura os botões de período do gráfico
+ */
+function setupChartActions() {
+    const chartActions = document.querySelectorAll('.btn-chart-action');
+    
+    chartActions.forEach(btn => {
         btn.addEventListener('click', function() {
-            this.parentElement.querySelectorAll('.btn-chart-action').forEach(b => b.classList.remove('active'));
+            // Remove active de todos os botões
+            chartActions.forEach(b => b.classList.remove('active'));
+            
+            // Adiciona active no botão clicado
             this.classList.add('active');
+            
+            // Obtém o período selecionado
+            const periodo = this.textContent.trim();
+            
+            // Atualiza o gráfico com os dados do período
+            updateStatusChart(periodo);
         });
     });
-});
+}
 
 function loadKPIs() {
     const viagens = getData(STORAGE_KEYS.VIAGENS);
@@ -35,7 +56,7 @@ function loadKPIs() {
 function loadCharts() {
     const viagens = getData(STORAGE_KEYS.VIAGENS);
     
-    // Gráfico de Viagens por Dia
+    // Gráfico de Viagens por Dia (Barra)
     const canvasViagens = document.getElementById('chartViagensDia');
     if (canvasViagens) {
         const ctx = canvasViagens.getContext('2d');
@@ -74,45 +95,102 @@ function loadCharts() {
         });
     }
     
-    // Gráfico de Status das Entregas
+    // Gráfico de Status das Entregas (Rosquinha) - Começa com Semanal
+    updateStatusChart('Semanal');
+}
+
+/**
+ * Atualiza o gráfico de status baseado no período selecionado
+ * @param {string} periodo - 'Semanal' ou 'Mensal'
+ */
+function updateStatusChart(periodo) {
     const canvasStatus = document.getElementById('chartStatusEntregas');
-    if (canvasStatus) {
-        const statusCounts = {
-            'Concluída': viagens.filter(v => v.status === 'Concluída').length,
-            'Em andamento': viagens.filter(v => v.status === 'Em andamento').length,
-            'Pendente': viagens.filter(v => v.status === 'Pendente').length,
-            'Cancelada': viagens.filter(v => v.status === 'Cancelada').length
+    if (!canvasStatus) return;
+    
+    // Destroi o gráfico anterior se existir
+    if (chartStatusEntregas) {
+        chartStatusEntregas.destroy();
+        chartStatusEntregas = null;
+    }
+    
+    // Dados diferentes para cada período
+    let statusData;
+    
+    if (periodo === 'Semanal') {
+        statusData = {
+            labels: ['Concluídas', 'Em andamento', 'Pendentes', 'Canceladas'],
+            datasets: [{
+                data: [18, 6, 4, 2],
+                backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
+                borderWidth: 0,
+                hoverBorderWidth: 3,
+                hoverBorderColor: '#fff'
+            }]
         };
-        
-        const ctx = canvasStatus.getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: Object.keys(statusCounts),
-                datasets: [{
-                    data: Object.values(statusCounts),
-                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
-                    borderWidth: 0,
-                    hoverBorderWidth: 3,
-                    hoverBorderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true,
-                            pointStyleWidth: 20
+    } else if (periodo === 'Mensal') {
+        statusData = {
+            labels: ['Concluídas', 'Em andamento', 'Pendentes', 'Canceladas'],
+            datasets: [{
+                data: [85, 22, 15, 8],
+                backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
+                borderWidth: 0,
+                hoverBorderWidth: 3,
+                hoverBorderColor: '#fff'
+            }]
+        };
+    }
+    
+    // Cria o novo gráfico
+    const ctx = canvasStatus.getContext('2d');
+    chartStatusEntregas = new Chart(ctx, {
+        type: 'doughnut',
+        data: statusData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyleWidth: 20,
+                        font: {
+                            size: 12
+                        },
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            return data.labels.map((label, index) => {
+                                const value = data.datasets[0].data[index];
+                                const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                
+                                return {
+                                    text: `${label}: ${value} (${percentage}%)`,
+                                    fillStyle: data.datasets[0].backgroundColor[index],
+                                    strokeStyle: data.datasets[0].backgroundColor[index],
+                                    lineWidth: 0,
+                                    hidden: false,
+                                    index: index
+                                };
+                            });
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return ` ${label}: ${value} (${percentage}%)`;
                         }
                     }
                 }
             }
-        });
-    }
+        }
+    });
 }
 
 function loadRecentActivities() {
@@ -147,7 +225,7 @@ function loadRecentActivities() {
         },
         {
             icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="5" stroke="#c62828" stroke-width="2"/>
+                <circle cx="12" cy="12" r="9" stroke="#c62828" stroke-width="2"/>
                 <path d="M12 7V13" stroke="#c62828" stroke-width="2" stroke-linecap="round"/>
                 <circle cx="12" cy="16" r="1" fill="#c62828"/>
             </svg>`,
