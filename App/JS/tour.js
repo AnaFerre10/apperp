@@ -1,45 +1,74 @@
 /**
- * TransCloud ERP - Módulo de Tutorial Interativo Guiado (Spotlight)
+ * TransCloud ERP - Sistema Unificado de Tutorial Interativo
  */
 
-const tourSteps = [
-    {
-        element: '.sidebar-nav',
-        title: 'Navegação Principal',
-        description: 'Acesse facilmente os módulos do sistema como Transportes, Relatórios e Configurações.',
-        position: 'right'
-    },
-    {
-        element: '#themeToggle',
-        title: 'Tema Claro e Escuro',
-        description: 'Alterne o visual entre os modos claro e escuro a qualquer momento para seu conforto visual.',
-        position: 'bottom'
-    },
-    {
-        element: '.kpi-grid',
-        title: 'Indicadores KPI',
-        description: 'Acompanhe as métricas em tempo real sobre viagens, entregas e ocorrências de hoje.',
-        position: 'bottom'
-    },
-    {
-        element: '#chartViagensDia',
-        title: 'Gráfico de Viagens',
-        description: 'Visualize o desempenho diário das viagens realizadas durante a semana.',
-        position: 'top'
-    },
-    {
-        element: '#chartStatusEntregas',
-        title: 'Status das Entregas',
-        description: 'Gráfico de setores indicando as entregas concluídas, em andamento e pendentes. Você pode alternar entre visão semanal e mensal!',
-        position: 'top'
-    },
-    {
-        element: '#recentActivities',
-        title: 'Atividades Recentes',
-        description: 'Confira as últimas movimentações e atualizações do sistema em tempo real.',
-        position: 'top'
-    }
+// Injeta os estilos dinamicamente sem precisar de arquivo CSS separado
+(function injectTourStyles() {
+    if (document.getElementById('tourStyleInject')) return;
+    const style = document.createElement('style');
+    style.id = 'tourStyleInject';
+    style.innerHTML = `
+        .tour-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 9998; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .tour-overlay.active { opacity: 1; visibility: visible; }
+        
+        .tour-spotlight {
+            position: fixed; z-index: 9999; border-radius: 10px;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+            transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease, left 0.3s ease, width 0.3s ease, height 0.3s ease;
+            pointer-events: none; opacity: 0; visibility: hidden;
+        }
+        .tour-spotlight.active { opacity: 1; visibility: visible; }
+        
+        .tour-popover {
+            position: fixed; z-index: 10000; width: 320px; background-color: #ffffff; color: #1f2937;
+            border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); opacity: 0; visibility: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.08); font-family: 'Inter', sans-serif;
+        }
+        body.dark-theme .tour-popover { background-color: #1e293b; color: #f3f4f6; border-color: #334155; }
+        .tour-popover.active { opacity: 1; visibility: visible; }
+        
+        .tour-popover-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .tour-popover-title { font-size: 16px; font-weight: 700; margin: 0; }
+        .tour-popover-step { font-size: 12px; font-weight: 600; opacity: 0.6; }
+        .tour-popover-body { font-size: 14px; line-height: 1.5; margin-bottom: 20px; }
+        .tour-popover-footer { display: flex; justify-content: space-between; align-items: center; }
+        
+        .tour-btn { border: none; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .tour-btn-skip { background: transparent; color: #6b7280; }
+        body.dark-theme .tour-btn-skip { color: #9ca3af; }
+        .tour-btn-nav { display: flex; gap: 8px; }
+        .tour-btn-prev { background: #e5e7eb; color: #374151; }
+        body.dark-theme .tour-btn-prev { background: #334155; color: #e2e8f0; }
+        .tour-btn-next { background: #1a73e8; color: #ffffff; }
+        .tour-btn-next:hover { background: #1557b0; }
+    `;
+    document.head.appendChild(style);
+})();
+
+// Passos para a página de Configurações
+const tourStepsConfiguracoes = [
+    { element: '.sidebar-nav', title: 'Navegação Principal', description: 'Acesse rapidamente qualquer módulo do sistema.', position: 'right' },
+    { element: '#themeToggle', title: 'Alternar Tema', description: 'Troque entre o tema claro e escuro quando preferir.', position: 'bottom' },
+    { element: '#cardMinhasInformacoes', title: 'Minhas Informações', description: 'Gerencie seus dados de perfil e atualize sua senha de acesso.', position: 'right' },
+    { element: '#accountForm', title: 'Formulário de Dados', description: 'Altere seu nome, e-mail corporativo ou senha e clique em Salvar.', position: 'bottom' },
+    { element: '#cardOpcoesSistema', title: 'Opções do Sistema', description: 'Ajuste avisos, notificações por e-mail e rotinas de backup.', position: 'left' },
+    { element: '#itemNotificacoes', title: 'Notificações por E-mail', description: 'Ative ou desative o envio de relatórios e alertas automáticos.', position: 'bottom' }
 ];
+
+// Passos de fallback caso o usuário esteja no Dashboard
+const tourStepsDashboard = [
+    { element: '.sidebar-nav', title: 'Navegação Principal', description: 'Acesse facilmente os módulos do sistema.', position: 'right' },
+    { element: '#themeToggle', title: 'Tema Claro e Escuro', description: 'Alterne o visual do sistema a qualquer momento.', position: 'bottom' }
+];
+
+function getActiveSteps() {
+    return document.getElementById('cardMinhasInformacoes') ? tourStepsConfiguracoes : tourStepsDashboard;
+}
 
 let currentStepIndex = 0;
 let spotlightEl = null;
@@ -72,7 +101,6 @@ function startTour() {
     initTour();
     currentStepIndex = 0;
     
-    // Ativa todas as camadas (LIGA O TEMA ESCURO DO HOLOFOTE)
     if (overlayEl) overlayEl.classList.add('active');
     if (spotlightEl) spotlightEl.classList.add('active');
     if (popoverEl) popoverEl.classList.add('active');
@@ -81,16 +109,14 @@ function startTour() {
 }
 
 function endTour() {
-    // Desativa todas as camadas (DESLIGA O TEMA ESCURO DO HOLOFOTE)
     if (overlayEl) overlayEl.classList.remove('active');
     if (spotlightEl) spotlightEl.classList.remove('active');
     if (popoverEl) popoverEl.classList.remove('active');
-    
-    localStorage.setItem('transcloud_tour_completed', 'true');
 }
 
 function showStep(index) {
-    const step = tourSteps[index];
+    const steps = getActiveSteps();
+    const step = steps[index];
     if (!step) return;
 
     const target = document.querySelector(step.element);
@@ -113,7 +139,7 @@ function showStep(index) {
         popoverEl.innerHTML = `
             <div class="tour-popover-header">
                 <h4 class="tour-popover-title">${step.title}</h4>
-                <span class="tour-popover-step">${index + 1} de ${tourSteps.length}</span>
+                <span class="tour-popover-step">${index + 1} de ${steps.length}</span>
             </div>
             <div class="tour-popover-body">${step.description}</div>
             <div class="tour-popover-footer">
@@ -121,14 +147,14 @@ function showStep(index) {
                 <div class="tour-btn-nav">
                     ${index > 0 ? `<button class="tour-btn tour-btn-prev" onclick="prevStep()">Anterior</button>` : ''}
                     <button class="tour-btn tour-btn-next" onclick="nextStep()">
-                        ${index === tourSteps.length - 1 ? 'Concluir' : 'Próximo'}
+                        ${index === steps.length - 1 ? 'Concluir' : 'Próximo'}
                     </button>
                 </div>
             </div>
         `;
 
         positionPopover(rect, step.position);
-    }, 200);
+    }, 250);
 }
 
 function positionPopover(targetRect, position) {
@@ -171,7 +197,8 @@ function positionPopover(targetRect, position) {
 }
 
 function nextStep() {
-    if (currentStepIndex < tourSteps.length - 1) {
+    const steps = getActiveSteps();
+    if (currentStepIndex < steps.length - 1) {
         currentStepIndex++;
         showStep(currentStepIndex);
     } else {
@@ -192,11 +219,12 @@ function repositionTour() {
     }
 }
 
+// Expõe globalmente para funcionar direto pelo onclick do HTML
+window.startTour = startTour;
+window.endTour = endTour;
+window.nextStep = nextStep;
+window.prevStep = prevStep;
+
 document.addEventListener('DOMContentLoaded', () => {
     initTour();
-    
-    const tourDone = localStorage.getItem('transcloud_tour_completed');
-    if (!tourDone) {
-        setTimeout(startTour, 1000);
-    }
 });
