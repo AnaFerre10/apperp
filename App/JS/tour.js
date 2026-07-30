@@ -1,8 +1,8 @@
 /**
- * TransCloud ERP - Sistema Unificado de Tutorial Interativo
+ * TransCloud ERP - Tutorial com Design Original & Destaque Aumentado
  */
 
-// Injeta os estilos dinamicamente sem precisar de arquivo CSS separado
+// Injeta os estilos originais + destaque luminoso
 (function injectTourStyles() {
     if (document.getElementById('tourStyleInject')) return;
     const style = document.createElement('style');
@@ -10,19 +10,24 @@
     style.innerHTML = `
         .tour-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 9998; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
-            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.45);
         }
         .tour-overlay.active { opacity: 1; visibility: visible; }
         
+        /* Borda e iluminação para deixar a área destacada bem clara e nítida */
         .tour-spotlight {
             position: fixed; z-index: 9999; border-radius: 10px;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+            border: 2px solid #1a73e8;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6), 0 0 20px rgba(26, 115, 232, 0.5);
             transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease, left 0.3s ease, width 0.3s ease, height 0.3s ease;
             pointer-events: none; opacity: 0; visibility: hidden;
+            background: transparent;
         }
         .tour-spotlight.active { opacity: 1; visibility: visible; }
         
+        /* Layout e Tipografia Originais */
         .tour-popover {
             position: fixed; z-index: 10000; width: 320px; background-color: #ffffff; color: #1f2937;
             border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -33,11 +38,12 @@
         .tour-popover.active { opacity: 1; visibility: visible; }
         
         .tour-popover-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .tour-popover-title { font-size: 16px; font-weight: 700; margin: 0; }
+        .tour-popover-title { font-size: 16px; font-weight: 700; margin: 0; color: inherit; }
         .tour-popover-step { font-size: 12px; font-weight: 600; opacity: 0.6; }
-        .tour-popover-body { font-size: 14px; line-height: 1.5; margin-bottom: 20px; }
+        .tour-popover-body { font-size: 14px; line-height: 1.5; margin-bottom: 20px; color: inherit; }
         .tour-popover-footer { display: flex; justify-content: space-between; align-items: center; }
         
+        /* Botões com Tamanhos e Cores Originais */
         .tour-btn { border: none; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .tour-btn-skip { background: transparent; color: #6b7280; }
         body.dark-theme .tour-btn-skip { color: #9ca3af; }
@@ -50,9 +56,19 @@
     document.head.appendChild(style);
 })();
 
-// Passos para a página de Configurações
+// Passos do Dashboard (6 Passos)
+const tourStepsDashboard = [
+    { element: '#sidebar', title: 'Navegação Principal', description: 'Acesse rapidamente os módulos do sistema: Dashboard, Transportes, Relatórios e Configurações.', position: 'right' },
+    { element: '#themeToggle', title: 'Alternar Tema', description: 'Alterne entre o tema claro e escuro do sistema para melhor conforto visual.', position: 'bottom' },
+    { element: '.page-content > div:nth-child(1), .kpi-grid, .metrics-grid', title: 'Indicadores Principais (KPIs)', description: 'Acompanhe resumos em tempo real sobre viagens em andamento, entregas concluídas e alertas.', position: 'bottom' },
+    { element: '.page-content > div:nth-child(2), .chart-card, .dashboard-card', title: 'Gráficos de Desempenho', description: 'Análise estatística e evolução dos transportes visualmente por período.', position: 'top' },
+    { element: '.page-content > div:nth-child(3), table, .recent-activity', title: 'Tabela de Movimentações', description: 'Veja os registros mais recentes e acompanhe o status de cada carga cadastrada.', position: 'top' },
+    { element: '#navTutorialBtn', title: 'Ajuda e Tutorial', description: 'Precisa rever este passo a passo? Basta clicar no botão Tutorial a qualquer momento.', position: 'right' }
+];
+
+// Passos de Configurações (6 Passos)
 const tourStepsConfiguracoes = [
-    { element: '.sidebar-nav', title: 'Navegação Principal', description: 'Acesse rapidamente qualquer módulo do sistema.', position: 'right' },
+    { element: '#sidebar', title: 'Navegação Principal', description: 'Acesse rapidamente qualquer módulo do sistema.', position: 'right' },
     { element: '#themeToggle', title: 'Alternar Tema', description: 'Troque entre o tema claro e escuro quando preferir.', position: 'bottom' },
     { element: '#cardMinhasInformacoes', title: 'Minhas Informações', description: 'Gerencie seus dados de perfil e atualize sua senha de acesso.', position: 'right' },
     { element: '#accountForm', title: 'Formulário de Dados', description: 'Altere seu nome, e-mail corporativo ou senha e clique em Salvar.', position: 'bottom' },
@@ -60,20 +76,15 @@ const tourStepsConfiguracoes = [
     { element: '#itemNotificacoes', title: 'Notificações por E-mail', description: 'Ative ou desative o envio de relatórios e alertas automáticos.', position: 'bottom' }
 ];
 
-// Passos de fallback caso o usuário esteja no Dashboard
-const tourStepsDashboard = [
-    { element: '.sidebar-nav', title: 'Navegação Principal', description: 'Acesse facilmente os módulos do sistema.', position: 'right' },
-    { element: '#themeToggle', title: 'Tema Claro e Escuro', description: 'Alterne o visual do sistema a qualquer momento.', position: 'bottom' }
-];
-
-function getActiveSteps() {
-    return document.getElementById('cardMinhasInformacoes') ? tourStepsConfiguracoes : tourStepsDashboard;
-}
-
 let currentStepIndex = 0;
 let spotlightEl = null;
 let popoverEl = null;
 let overlayEl = null;
+
+function getActiveSteps() {
+    const isConfig = document.getElementById('cardMinhasInformacoes') || window.location.pathname.includes('configuracoes');
+    return isConfig ? tourStepsConfiguracoes : tourStepsDashboard;
+}
 
 function initTour() {
     if (document.getElementById('tourOverlay')) return;
@@ -101,9 +112,9 @@ function startTour() {
     initTour();
     currentStepIndex = 0;
     
-    if (overlayEl) overlayEl.classList.add('active');
-    if (spotlightEl) spotlightEl.classList.add('active');
-    if (popoverEl) popoverEl.classList.add('active');
+    overlayEl.classList.add('active');
+    spotlightEl.classList.add('active');
+    popoverEl.classList.add('active');
     
     showStep(currentStepIndex);
 }
@@ -114,47 +125,73 @@ function endTour() {
     if (popoverEl) popoverEl.classList.remove('active');
 }
 
+function isFixed(element) {
+    let el = element;
+    while (el && el !== document.body) {
+        const style = window.getComputedStyle(el);
+        if (style.position === 'fixed' || style.position === 'sticky') {
+            return true;
+        }
+        el = el.parentElement;
+    }
+    return false;
+}
+
 function showStep(index) {
     const steps = getActiveSteps();
     const step = steps[index];
     if (!step) return;
 
-    const target = document.querySelector(step.element);
-    if (!target) {
-        nextStep();
-        return;
+    const selectors = step.element.split(',');
+    let target = null;
+    for (let sel of selectors) {
+        let el = document.querySelector(sel.trim());
+        if (el && el.offsetWidth > 0 && el.offsetHeight > 0) {
+            target = el;
+            break;
+        }
     }
 
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!target) {
+        target = document.querySelector('.main-content') || document.body;
+    }
+
+    if (!isFixed(target)) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
     setTimeout(() => {
-        const rect = target.getBoundingClientRect();
-        const padding = 8;
+        renderStepContent(target, step, index, steps.length);
+    }, 150);
+}
 
-        spotlightEl.style.top = `${rect.top - padding}px`;
-        spotlightEl.style.left = `${rect.left - padding}px`;
-        spotlightEl.style.width = `${rect.width + padding * 2}px`;
-        spotlightEl.style.height = `${rect.height + padding * 2}px`;
+function renderStepContent(target, step, index, totalSteps) {
+    const rect = target.getBoundingClientRect();
+    const padding = 8;
 
-        popoverEl.innerHTML = `
-            <div class="tour-popover-header">
-                <h4 class="tour-popover-title">${step.title}</h4>
-                <span class="tour-popover-step">${index + 1} de ${steps.length}</span>
+    spotlightEl.style.top = `${Math.max(0, rect.top - padding)}px`;
+    spotlightEl.style.left = `${Math.max(0, rect.left - padding)}px`;
+    spotlightEl.style.width = `${rect.width + (padding * 2)}px`;
+    spotlightEl.style.height = `${rect.height + (padding * 2)}px`;
+
+    popoverEl.innerHTML = `
+        <div class="tour-popover-header">
+            <h4 class="tour-popover-title">${step.title}</h4>
+            <span class="tour-popover-step">${index + 1} de ${totalSteps}</span>
+        </div>
+        <div class="tour-popover-body">${step.description}</div>
+        <div class="tour-popover-footer">
+            <button class="tour-btn tour-btn-skip" onclick="endTour()">Pular</button>
+            <div class="tour-btn-nav">
+                ${index > 0 ? `<button class="tour-btn tour-btn-prev" onclick="prevStep()">Anterior</button>` : ''}
+                <button class="tour-btn tour-btn-next" onclick="nextStep()">
+                    ${index === totalSteps - 1 ? 'Concluir' : 'Próximo'}
+                </button>
             </div>
-            <div class="tour-popover-body">${step.description}</div>
-            <div class="tour-popover-footer">
-                <button class="tour-btn tour-btn-skip" onclick="endTour()">Pular</button>
-                <div class="tour-btn-nav">
-                    ${index > 0 ? `<button class="tour-btn tour-btn-prev" onclick="prevStep()">Anterior</button>` : ''}
-                    <button class="tour-btn tour-btn-next" onclick="nextStep()">
-                        ${index === steps.length - 1 ? 'Concluir' : 'Próximo'}
-                    </button>
-                </div>
-            </div>
-        `;
+        </div>
+    `;
 
-        positionPopover(rect, step.position);
-    }, 250);
+    positionPopover(rect, step.position);
 }
 
 function positionPopover(targetRect, position) {
@@ -196,6 +233,12 @@ function positionPopover(targetRect, position) {
     popoverEl.style.left = `${left}px`;
 }
 
+function repositionTour() {
+    if (overlayEl && overlayEl.classList.contains('active')) {
+        showStep(currentStepIndex);
+    }
+}
+
 function nextStep() {
     const steps = getActiveSteps();
     if (currentStepIndex < steps.length - 1) {
@@ -213,18 +256,9 @@ function prevStep() {
     }
 }
 
-function repositionTour() {
-    if (overlayEl && overlayEl.classList.contains('active')) {
-        showStep(currentStepIndex);
-    }
-}
-
-// Expõe globalmente para funcionar direto pelo onclick do HTML
 window.startTour = startTour;
 window.endTour = endTour;
 window.nextStep = nextStep;
 window.prevStep = prevStep;
 
-document.addEventListener('DOMContentLoaded', () => {
-    initTour();
-});
+document.addEventListener('DOMContentLoaded', initTour);
